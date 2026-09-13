@@ -174,6 +174,32 @@ abstract class TrKeys {
   static const zAquarius = 'z_aquarius';
   static const zPisces = 'z_pisces';
 
+  // --- Navigation ---------------------------------------------------------
+  static const navDiscover = 'nav_discover';
+  static const navMatches = 'nav_matches';
+  static const navMessages = 'nav_messages';
+  static const navProfile = 'nav_profile';
+  static const navPlans = 'nav_plans';
+  static const navSettings = 'nav_settings';
+  static const navTerms = 'nav_terms';
+  static const navAdmin = 'nav_admin';
+  static const navMenu = 'nav_menu';
+
+  // --- Home ---------------------------------------------------------------
+  static const homePerfectMatches = 'home_perfect_matches';
+  static const homeSeeAll = 'home_see_all';
+  static const homeNoMatches = 'home_no_matches';
+  static const homeNoMatchesHint = 'home_no_matches_hint';
+  static const homeRetry = 'home_retry';
+  static const homeUpgrade = 'home_upgrade';
+  static const homeFreeLimit = 'home_free_limit';
+  static const homeMatchPercent = 'home_match_percent';
+  static const homeComingSoonTitle = 'home_coming_soon_title';
+  static const homeComingSoonBody = 'home_coming_soon_body';
+  static const signOutConfirmTitle = 'sign_out_confirm_title';
+  static const signOutConfirmBody = 'sign_out_confirm_body';
+  static const cancel = 'cancel';
+
   // --- Placeholders ------------------------------------------------------
   static const comingSoon = 'coming_soon';
   static const registerPlaceholderNote = 'register_placeholder_note';

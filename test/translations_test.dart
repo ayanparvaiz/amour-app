@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:amour_app/app/core/localization/app_translations.dart';
 import 'package:amour_app/app/core/localization/translation_keys.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,43 +23,31 @@ void main() {
   });
 
   test('every key declared in TrKeys is translated', () {
-    // TrKeys is the list of what the app asks for; the maps are what it gets.
-    const declared = <String>{
-      TrKeys.appName, TrKeys.back, TrKeys.error, TrKeys.update,
-      TrKeys.showPassword, TrKeys.hidePassword,
-      TrKeys.showPasswords, TrKeys.hidePasswords,
-      TrKeys.loginTitle, TrKeys.loginSubtitle, TrKeys.email, TrKeys.emailHint,
-      TrKeys.password, TrKeys.forgotPasswordLink, TrKeys.signIn,
-      TrKeys.noAccountYet, TrKeys.signUp,
-      TrKeys.registerTitle, TrKeys.registerHeadline, TrKeys.firstName,
-      TrKeys.firstNameHint, TrKeys.age, TrKeys.ageHint, TrKeys.createAccount,
-      TrKeys.minimumAgeNotice, TrKeys.alreadyHaveAccount, TrKeys.accountCreated,
-      TrKeys.welcomeAboard,
-      TrKeys.forgotPasswordTitle, TrKeys.forgotPasswordHeadline,
-      TrKeys.forgotPasswordBlurb, TrKeys.sendLink, TrKeys.resetLinkOpensBrowser,
-      TrKeys.emailSent, TrKeys.resetLinkSent, TrKeys.enterEmailFirst,
-      TrKeys.changePasswordTitle, TrKeys.currentPassword, TrKeys.newPassword,
-      TrKeys.confirmNewPassword, TrKeys.passwordChanged,
-      TrKeys.passwordChangedBody,
-      TrKeys.enterEmail, TrKeys.emailLooksWrong, TrKeys.enterPassword,
-      TrKeys.passwordTooShort, TrKeys.enterFirstName, TrKeys.enterAge,
-      TrKeys.mustBe18, TrKeys.invalidAge, TrKeys.enterCurrentPassword,
-      TrKeys.enterNewPassword, TrKeys.chooseDifferentPassword,
-      TrKeys.passwordsDoNotMatch,
-      TrKeys.sessionEnded, TrKeys.sessionExpired, TrKeys.accountSuspended,
-      TrKeys.accountDeleted, TrKeys.serverTooSlow, TrKeys.cannotReachServer,
-      TrKeys.unexpectedResponse, TrKeys.somethingWentWrong, TrKeys.noValidSession,
-      TrKeys.greeting, TrKeys.signOut, TrKeys.screensComingNext,
-      TrKeys.entSendMessages, TrKeys.entSeeWhoLikedYou, TrKeys.entAdvancedFilters,
-      TrKeys.entProfileVisitors, TrKeys.entSuperLikes,
-      TrKeys.entSuperLikesWithQuota,
-      TrKeys.tierFree,
-      TrKeys.comingSoon, TrKeys.registerPlaceholderNote, TrKeys.yourProfile,
-      TrKeys.profileSetupNote,
-    };
+    // Read the declarations rather than listing them here: a hand-kept list
+    // silently stops covering whatever was added after it was written.
+    final source = File('lib/app/core/localization/translation_keys.dart')
+        .readAsStringSync();
+    final declared = RegExp(r"static const \w+ = '([a-z0-9_]+)';")
+        .allMatches(source)
+        .map((m) => m.group(1)!)
+        .toSet();
 
-    final untranslated = declared.where((k) => !en.containsKey(k)).toSet();
+    expect(declared, isNotEmpty, reason: 'the regex stopped matching the file');
+
+    final untranslated = declared.difference(en.keys.toSet());
     expect(untranslated, isEmpty, reason: 'Declared but never translated');
+  });
+
+  test('no translation is defined for a key nobody declares', () {
+    final source = File('lib/app/core/localization/translation_keys.dart')
+        .readAsStringSync();
+    final declared = RegExp(r"static const \w+ = '([a-z0-9_]+)';")
+        .allMatches(source)
+        .map((m) => m.group(1)!)
+        .toSet();
+
+    expect(en.keys.toSet().difference(declared), isEmpty,
+        reason: 'Translated but no longer declared — leftover after a rename');
   });
 
   test('placeholders survive translation', () {
@@ -67,6 +57,9 @@ void main() {
       TrKeys.greeting: '@name',
       TrKeys.entSuperLikesWithQuota: '@count',
       TrKeys.unexpectedResponse: '@code',
+      TrKeys.psStepOf: '@current',
+      TrKeys.psYearsOld: '@count',
+      TrKeys.homeMatchPercent: '@percent',
     };
 
     withTokens.forEach((key, token) {
@@ -76,10 +69,10 @@ void main() {
   });
 
   test('French is genuinely translated, not copied English', () {
-    // A few keys are the same word in both languages and should stay that way:
-    // the brand name, "Email", the example values, and "Super Likes" — which
-    // the backend itself leaves in English inside French sentences
-    // ("Les Super Likes sont réservés aux membres Premium et Prestige").
+    // These read the same in both languages and should stay that way: the brand
+    // name, words French borrowed unchanged, the example values, and the two
+    // product names the backend itself leaves in English inside French
+    // sentences ("Les Super Likes sont réservés aux membres Premium").
     const sameInBoth = {
       TrKeys.appName,
       TrKeys.email,
@@ -87,7 +80,9 @@ void main() {
       TrKeys.firstNameHint,
       TrKeys.ageHint,
       TrKeys.entSuperLikes,
-      TrKeys.zCancer, // spelled the same in both languages
+      TrKeys.zCancer,
+      TrKeys.navMessages,
+      TrKeys.navMenu,
     };
 
     final copied = en.keys

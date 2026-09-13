@@ -179,6 +179,34 @@ class AppTranslations extends Translations {
     TrKeys.zAquarius: 'Aquarius',
     TrKeys.zPisces: 'Pisces',
 
+    // Navigation
+    TrKeys.navDiscover: 'Discover',
+    TrKeys.navMatches: 'Matches',
+    TrKeys.navMessages: 'Messages',
+    TrKeys.navProfile: 'Profile',
+    TrKeys.navPlans: 'Plans',
+    TrKeys.navSettings: 'Settings',
+    TrKeys.navTerms: 'Terms',
+    TrKeys.navAdmin: 'Admin dashboard',
+    TrKeys.navMenu: 'Menu',
+
+    // Home
+    TrKeys.homePerfectMatches: 'Perfect matches',
+    TrKeys.homeSeeAll: 'See all',
+    TrKeys.homeNoMatches: 'No matches yet',
+    TrKeys.homeNoMatchesHint:
+        'Widen your preferences in Discover and new profiles will appear here.',
+    TrKeys.homeRetry: 'Try again',
+    TrKeys.homeUpgrade: 'Upgrade',
+    TrKeys.homeFreeLimit:
+        'Free members see five profiles. Upgrade to browse without a limit.',
+    TrKeys.homeMatchPercent: '@percent% match',
+    TrKeys.homeComingSoonTitle: 'Coming next',
+    TrKeys.homeComingSoonBody: 'This part of the app is still being built.',
+    TrKeys.signOutConfirmTitle: 'Sign out?',
+    TrKeys.signOutConfirmBody: 'You will need your password to sign back in.',
+    TrKeys.cancel: 'Cancel',
+
     // Placeholders
     TrKeys.comingSoon: 'This screen will be built soon.',
     TrKeys.registerPlaceholderNote:
@@ -348,6 +376,37 @@ class AppTranslations extends Translations {
     TrKeys.zCapricorn: 'Capricorne',
     TrKeys.zAquarius: 'Verseau',
     TrKeys.zPisces: 'Poissons',
+
+    // Navigation
+    TrKeys.navDiscover: 'Découvrir',
+    TrKeys.navMatches: 'Matchs',
+    TrKeys.navMessages: 'Messages',
+    TrKeys.navProfile: 'Profil',
+    TrKeys.navPlans: 'Forfaits',
+    TrKeys.navSettings: 'Paramètres',
+    TrKeys.navTerms: 'Conditions',
+    TrKeys.navAdmin: 'Tableau de bord admin',
+    TrKeys.navMenu: 'Menu',
+
+    // Home
+    TrKeys.homePerfectMatches: 'Matchs Parfaits',
+    TrKeys.homeSeeAll: 'Voir tout',
+    TrKeys.homeNoMatches: 'Aucun match pour le moment',
+    TrKeys.homeNoMatchesHint:
+        'Élargissez vos critères dans Découvrir et de nouveaux profils '
+            'apparaîtront ici.',
+    TrKeys.homeRetry: 'Réessayer',
+    TrKeys.homeUpgrade: 'Passer à un forfait',
+    TrKeys.homeFreeLimit:
+        'Les membres gratuits voient cinq profils. Passez à un forfait '
+            'supérieur pour explorer sans limite.',
+    TrKeys.homeMatchPercent: '@percent% de compatibilité',
+    TrKeys.homeComingSoonTitle: 'Bientôt disponible',
+    TrKeys.homeComingSoonBody: "Cette partie de l'application est en construction.",
+    TrKeys.signOutConfirmTitle: 'Se déconnecter ?',
+    TrKeys.signOutConfirmBody:
+        'Vous aurez besoin de votre mot de passe pour vous reconnecter.',
+    TrKeys.cancel: 'Annuler',
 
     // Placeholders
     TrKeys.comingSoon: 'Cet écran sera construit prochainement.',
