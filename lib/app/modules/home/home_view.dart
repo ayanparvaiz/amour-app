@@ -182,13 +182,14 @@ class _MatchesSection extends GetView<HomeController> {
             height: 246,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              clipBehavior: Clip.none,
               itemCount: controller.matches.length,
               separatorBuilder: (_, _) => const SizedBox(width: 12),
               itemBuilder: (_, i) {
                 final match = controller.matches[i];
                 return MatchCard(
                   match: match,
+                  // A horizontal list cannot size an unbounded child.
+                  width: 168,
                   onTap: () => Get.toNamed(AppRoutes.profile, arguments: match.id),
                 );
               },

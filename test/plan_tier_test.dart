@@ -131,7 +131,12 @@ void main() {
       expect(lifted.id, free.id);
       expect(lifted.name, free.name);
       expect(lifted.bio, free.bio);
-      expect(lifted.planName, 'Gratuit');
+
+      // The stored plan name is dropped: keeping "Gratuit" next to a Prestige
+      // allowance made the home card contradict itself.
+      expect(lifted.planName, isNull);
+      expect(lifted.tier.label, isNotEmpty);
+
       expect(free.canSendMessages, isFalse, reason: 'original must not change');
     });
   });

@@ -126,7 +126,9 @@ class UserModel {
         photo: photo,
         photos: photos,
         bio: bio,
-        planName: planName,
+        // The stored plan's name would contradict the new tier — "Free" above a
+        // Prestige allowance — so the label falls back to the tier itself.
+        planName: null,
         tier: newTier,
         subscriptionStatus: subscriptionStatus,
         subscriptionExpiry: subscriptionExpiry,
