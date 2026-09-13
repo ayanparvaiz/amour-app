@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/theme/app_colors.dart';
+import '../../core/widgets/app_logo.dart';
 import '../../routes/app_routes.dart';
 import 'auth_controller.dart';
 
@@ -26,9 +26,8 @@ class LoginView extends GetView<AuthController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Icon(Icons.favorite_rounded,
-                        size: 44, color: AppColors.primary),
-                    const SizedBox(height: 16),
+                    const Center(child: AppLogo(size: 76)),
+                    const SizedBox(height: 20),
                     Text('Bon retour parmi nous',
                         style: text.headlineMedium, textAlign: TextAlign.center),
                     const SizedBox(height: 6),

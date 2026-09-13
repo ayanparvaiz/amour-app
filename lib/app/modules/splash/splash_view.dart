@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../core/theme/app_colors.dart';
+import '../../core/widgets/app_logo.dart';
 import '../../data/services/auth_service.dart';
 import '../../data/services/storage_service.dart';
 import '../../routes/app_routes.dart';
@@ -43,32 +43,34 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(gradient: AppColors.heroGradient),
-        child: const Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.favorite_rounded, size: 64, color: Colors.white),
-              SizedBox(height: 18),
-              Text(
-                'Amour Et Sincérité',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -0.6,
-                ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const AppLogo(size: 104),
+            const SizedBox(height: 22),
+            Text(
+              'Amour Et Sincérité',
+              style: TextStyle(
+                color: scheme.onSurface,
+                fontSize: 24,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.6,
               ),
-              SizedBox(height: 28),
-              SizedBox(
-                width: 22,
-                height: 22,
-                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.4),
+            ),
+            const SizedBox(height: 32),
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                color: scheme.primary,
+                strokeWidth: 2.2,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
