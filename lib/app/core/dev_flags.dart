@@ -33,7 +33,7 @@ class DevFlags {
   //  back 403. Use it to build and check paid screens; use a genuinely paid or
   //  admin account to test that they work.
   // ───────────────────────────────────────────────────────────────────────────
-  static const bool _previewAsPrestige = false;
+  static const bool _previewAsPrestige = true;
 
   static bool get previewInFrench => kDebugMode && _previewInFrench;
 
