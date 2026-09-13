@@ -15,21 +15,36 @@ class MatchCard extends StatelessWidget {
     super.key,
     required this.match,
     this.onTap,
-    this.width = 168,
+    this.width,
+    this.photoAspectRatio = 1,
+    this.onLike,
+    this.onPass,
+    this.onMessage,
   });
 
   final MatchModel match;
   final VoidCallback? onTap;
-  final double width;
+
+  /// Fixed width for a horizontal row. Null lets a grid decide.
+  final double? width;
+
+  /// 1 for the square cards in the home row, 3/4 for the taller grid ones.
+  final double photoAspectRatio;
+
+  /// Supplying all three adds the action row under the name. Omitting them
+  /// leaves the card as a plain link to the profile.
+  final VoidCallback? onLike;
+  final VoidCallback? onPass;
+  final VoidCallback? onMessage;
+
+  bool get _hasActions => onLike != null && onPass != null;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final percent = match.matchPercent;
 
-    return SizedBox(
-      width: width,
-      child: Material(
+    final card = Material(
         color: scheme.surface,
         borderRadius: BorderRadius.circular(kRadius),
         clipBehavior: Clip.antiAlias,
@@ -48,7 +63,7 @@ class MatchCard extends StatelessWidget {
                     // A square photo area keeps every card the same height
                     // whatever the image, so the row never looks ragged.
                     AspectRatio(
-                      aspectRatio: 1,
+                      aspectRatio: photoAspectRatio,
                       child: MemberAvatar.fill(
                         initial: match.initial,
                         photo: match.photo,
@@ -98,11 +113,106 @@ class MatchCard extends StatelessWidget {
                           ],
                         ),
                       ],
+                      if (_hasActions) ...[
+                        const SizedBox(height: 12),
+                        _Actions(
+                          onLike: onLike!,
+                          onPass: onPass!,
+                          onMessage: onMessage,
+                        ),
+                      ],
                     ],
                   ),
                 ),
               ],
             ),
+          ),
+        ),
+      );
+
+    return width == null ? card : SizedBox(width: width, child: card);
+  }
+}
+
+/// Pass, like and message — the same three the website puts under each card,
+/// with like given the most weight.
+class _Actions extends StatelessWidget {
+  const _Actions({required this.onLike, required this.onPass, this.onMessage});
+
+  final VoidCallback onLike;
+  final VoidCallback onPass;
+  final VoidCallback? onMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _RoundAction(
+          icon: Icons.close_rounded,
+          tooltip: TrKeys.discoverPass.tr,
+          onTap: onPass,
+          foreground: scheme.onSurfaceVariant,
+          border: scheme.outline,
+        ),
+        _RoundAction(
+          icon: Icons.favorite_rounded,
+          tooltip: TrKeys.discoverLike.tr,
+          onTap: onLike,
+          foreground: Colors.white,
+          background: scheme.primary,
+          size: 44,
+        ),
+        if (onMessage != null)
+          _RoundAction(
+            icon: Icons.chat_bubble_outline_rounded,
+            tooltip: TrKeys.discoverMessage.tr,
+            onTap: onMessage!,
+            foreground: scheme.primary,
+            border: scheme.outline,
+          ),
+      ],
+    );
+  }
+}
+
+class _RoundAction extends StatelessWidget {
+  const _RoundAction({
+    required this.icon,
+    required this.tooltip,
+    required this.onTap,
+    required this.foreground,
+    this.background,
+    this.border,
+    this.size = 36,
+  });
+
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onTap;
+  final Color foreground;
+  final Color? background;
+  final Color? border;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: Material(
+        color: background ?? Colors.transparent,
+        shape: CircleBorder(
+          side: border == null ? BorderSide.none : BorderSide(color: border!),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          customBorder: const CircleBorder(),
+          child: SizedBox(
+            width: size,
+            height: size,
+            child: Icon(icon, size: size * 0.46, color: foreground),
           ),
         ),
       ),

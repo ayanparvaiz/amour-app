@@ -18,6 +18,7 @@ class UserModel {
     this.tier = PlanTier.free,
     this.subscriptionStatus,
     this.subscriptionExpiry,
+    this.coordinates,
   });
 
   final String id;
@@ -36,6 +37,15 @@ class UserModel {
   final PlanTier tier;
   final String? subscriptionStatus;
   final DateTime? subscriptionExpiry;
+
+  /// Longitude and latitude, in that order — the order GeoJSON and the backend
+  /// both use, and the reverse of how people say it.
+  ///
+  /// Null when the member has never granted location. The schema defaults the
+  /// field to [0, 0], which is a real point in the Gulf of Guinea rather than
+  /// a marker for "unset", so that pair is treated as absent here: a radius
+  /// search sent from it would return nobody and look like a broken filter.
+  final (double, double)? coordinates;
 
   bool get isAdmin => role == 'admin';
 
@@ -72,6 +82,14 @@ class UserModel {
     final plan = json['plan'];
     final planMap = plan is Map ? Map<String, dynamic>.from(plan) : null;
 
+    final rawCoords = (json['locationCoords'] as Map?)?['coordinates'] as List?;
+    (double, double)? coords;
+    if (rawCoords != null && rawCoords.length >= 2) {
+      final lng = (rawCoords[0] as num?)?.toDouble() ?? 0;
+      final lat = (rawCoords[1] as num?)?.toDouble() ?? 0;
+      if (lng != 0 || lat != 0) coords = (lng, lat);
+    }
+
     return UserModel(
       id: (json['id'] ?? json['_id'] ?? '').toString(),
       name: (json['name'] ?? '').toString(),
@@ -89,6 +107,7 @@ class UserModel {
       tier: PlanTier.parse(planMap?['tier'] as String?),
       subscriptionStatus: json['subscriptionStatus'] as String?,
       subscriptionExpiry: DateTime.tryParse((json['subscriptionExpiry'] ?? '').toString()),
+      coordinates: coords,
     );
   }
 
@@ -111,6 +130,7 @@ class UserModel {
         tier: newTier,
         subscriptionStatus: subscriptionStatus,
         subscriptionExpiry: subscriptionExpiry,
+        coordinates: coordinates,
       );
 
   /// `GET /users/me` returns fewer fields than `PATCH /users/me` — it drops
@@ -134,6 +154,7 @@ class UserModel {
         tier: fresh.tier,
         subscriptionStatus: fresh.subscriptionStatus ?? subscriptionStatus,
         subscriptionExpiry: fresh.subscriptionExpiry ?? subscriptionExpiry,
+        coordinates: fresh.coordinates ?? coordinates,
       );
 
   Map<String, dynamic> toJson() => {
@@ -152,5 +173,10 @@ class UserModel {
         'plan': {'name': planName, 'tier': tier.name},
         'subscriptionStatus': subscriptionStatus,
         'subscriptionExpiry': subscriptionExpiry?.toIso8601String(),
+        if (coordinates != null)
+          'locationCoords': {
+            'type': 'Point',
+            'coordinates': [coordinates!.$1, coordinates!.$2],
+          },
       };
 }

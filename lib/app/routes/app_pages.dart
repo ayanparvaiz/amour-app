@@ -7,6 +7,8 @@ import '../modules/auth/login_view.dart';
 import '../modules/auth/password_controller.dart';
 import '../modules/auth/register_view.dart';
 import '../core/localization/translation_keys.dart';
+import '../modules/discover/discover_controller.dart';
+import '../modules/discover/discover_view.dart';
 import '../modules/home/home_controller.dart';
 import '../modules/home/home_view.dart';
 import '../modules/placeholder/placeholder_view.dart';
@@ -37,6 +39,13 @@ class HomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<HomeController>(() => HomeController());
+  }
+}
+
+class DiscoverBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<DiscoverController>(() => DiscoverController());
   }
 }
 
@@ -88,6 +97,12 @@ class AppPages {
       binding: HomeBinding(),
     ),
 
+    GetPage(
+      name: AppRoutes.discover,
+      page: () => const DiscoverView(),
+      binding: DiscoverBinding(),
+    ),
+
     // Still to be built. They are registered rather than omitted so every
     // drawer entry leads somewhere and the flow can be walked now.
     ..._comingNext,
@@ -95,7 +110,6 @@ class AppPages {
 
   static final _comingNext = <GetPage>[
     for (final (route, titleKey) in <(String, String)>[
-      (AppRoutes.discover, TrKeys.navDiscover),
       (AppRoutes.matches, TrKeys.navMatches),
       (AppRoutes.messages, TrKeys.navMessages),
       (AppRoutes.profile, TrKeys.navProfile),

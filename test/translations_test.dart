@@ -83,6 +83,8 @@ void main() {
       TrKeys.zCancer,
       TrKeys.navMessages,
       TrKeys.navMenu,
+      TrKeys.discoverMessage,
+      TrKeys.cBlond,
     };
 
     final copied = en.keys

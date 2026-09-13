@@ -200,6 +200,70 @@ abstract class TrKeys {
   static const signOutConfirmBody = 'sign_out_confirm_body';
   static const cancel = 'cancel';
 
+  // --- Discover -----------------------------------------------------------
+  static const discoverFilters = 'discover_filters';
+  static const discoverCriteria = 'discover_criteria';
+  static const discoverApply = 'discover_apply';
+  static const discoverReset = 'discover_reset';
+  static const discoverFound = 'discover_found';
+  static const discoverLocked = 'discover_locked';
+  static const discoverLockedBody = 'discover_locked_body';
+  static const discoverUnlock = 'discover_unlock';
+  static const discoverLike = 'discover_like';
+  static const discoverPass = 'discover_pass';
+  static const discoverMessage = 'discover_message';
+  static const discoverItsAMatch = 'discover_its_a_match';
+  static const discoverLiked = 'discover_liked';
+  static const discoverPassed = 'discover_passed';
+
+  // Filter sections
+  static const fSectionLocation = 'f_section_location';
+  static const fSectionLifestyle = 'f_section_lifestyle';
+  static const fSectionAdvanced = 'f_section_advanced';
+  static const fDistance = 'f_distance';
+  static const fAgeMin = 'f_age_min';
+  static const fAgeMax = 'f_age_max';
+  static const fKeyword = 'f_keyword';
+  static const fKeywordHint = 'f_keyword_hint';
+  static const fEyes = 'f_eyes';
+  static const fHair = 'f_hair';
+  static const fSmoke = 'f_smoke';
+  static const fAlcohol = 'f_alcohol';
+  static const fChildren = 'f_children';
+
+  // Search level
+  static const fLevelWorldwide = 'f_level_worldwide';
+  static const fLevelCountry = 'f_level_country';
+  static const fLevelDepartment = 'f_level_department';
+  static const fLevelRadius = 'f_level_radius';
+
+  /// Filter values are stored strings compared between members, so only the
+  /// labels below are translated — never the values themselves.
+  static const fSmokeAny = 'f_smoke_any';
+  static const fSmokeNo = 'f_smoke_no';
+  static const fSmokeOccasional = 'f_smoke_occasional';
+  static const fSmokeRegular = 'f_smoke_regular';
+  static const fAlcoholAny = 'f_alcohol_any';
+  static const fAlcoholNever = 'f_alcohol_never';
+  static const fAlcoholOccasionally = 'f_alcohol_occasionally';
+  static const fAlcoholRegularly = 'f_alcohol_regularly';
+  static const fChildrenAny = 'f_children_any';
+  static const fChildrenNone = 'f_children_none';
+  static const fChildrenHas = 'f_children_has';
+  static const fChildrenWants = 'f_children_wants';
+  static const fEyesAny = 'f_eyes_any';
+  static const fHairAny = 'f_hair_any';
+  static const cBlue = 'c_blue';
+  static const cGreen = 'c_green';
+  static const cBrown = 'c_brown';
+  static const cGrey = 'c_grey';
+  static const cHazel = 'c_hazel';
+  static const cBlack = 'c_black';
+  static const cDarkBrown = 'c_dark_brown';
+  static const cBlond = 'c_blond';
+  static const cRed = 'c_red';
+  static const cWhite = 'c_white';
+
   // --- Placeholders ------------------------------------------------------
   static const comingSoon = 'coming_soon';
   static const registerPlaceholderNote = 'register_placeholder_note';
