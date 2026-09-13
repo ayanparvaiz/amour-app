@@ -4,6 +4,8 @@ abstract class AppRoutes {
   static const splash = '/';
   static const login = '/login';
   static const register = '/register';
+  static const forgotPassword = '/forgot-password';
+  static const changePassword = '/change-password';
 
   /// The nine-step profile wizard shown when `gender` is still empty.
   static const profileSetup = '/profile-setup';

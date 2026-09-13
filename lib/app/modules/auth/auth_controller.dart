@@ -76,6 +76,11 @@ class AuthController extends GetxController {
         password: passwordCtrl.text,
         age: int.parse(ageCtrl.text.trim()),
       );
+      Get.snackbar(
+        'Compte créé',
+        'Bienvenue parmi nous 🎉',
+        snackPosition: SnackPosition.BOTTOM,
+      );
       // Registration always lands on the wizard — a new account has no gender yet.
       Get.offAllNamed(AppRoutes.profileSetup);
     });
@@ -89,10 +94,13 @@ class AuthController extends GetxController {
     }
     await _run(() async {
       await AuthService.to.forgotPassword(email);
+      // The website drops back to sign-in once the mail is away; do the same.
+      if (Get.currentRoute == AppRoutes.forgotPassword) Get.back();
       Get.snackbar(
         'Email envoyé',
         'Un lien de réinitialisation a été envoyé à votre adresse email.',
         snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 4),
       );
     });
   }

@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'password_controller.dart';
+
+/// Changing the password while signed in. The website puts this inside its
+/// settings page; here it is its own screen, reachable once settings is built.
+class ChangePasswordView extends GetView<PasswordController> {
+  const ChangePasswordView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Changer le mot de passe'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: Get.back,
+          tooltip: 'Retour',
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 420),
+              child: Form(
+                key: controller.formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Obx(() => TextFormField(
+                          controller: controller.currentCtrl,
+                          obscureText: controller.obscure.value,
+                          textInputAction: TextInputAction.next,
+                          autofillHints: const [AutofillHints.password],
+                          decoration: InputDecoration(
+                            labelText: 'Mot de passe actuel',
+                            suffixIcon: IconButton(
+                              icon: Icon(controller.obscure.value
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined),
+                              onPressed: controller.toggleObscure,
+                              tooltip: controller.obscure.value
+                                  ? 'Afficher les mots de passe'
+                                  : 'Masquer les mots de passe',
+                            ),
+                          ),
+                          validator: controller.validateCurrent,
+                        )),
+                    const SizedBox(height: 14),
+
+                    Obx(() => TextFormField(
+                          controller: controller.newCtrl,
+                          obscureText: controller.obscure.value,
+                          textInputAction: TextInputAction.next,
+                          autofillHints: const [AutofillHints.newPassword],
+                          decoration: const InputDecoration(
+                            labelText: 'Nouveau mot de passe',
+                          ),
+                          validator: controller.validateNew,
+                        )),
+                    const SizedBox(height: 14),
+
+                    Obx(() => TextFormField(
+                          controller: controller.confirmCtrl,
+                          obscureText: controller.obscure.value,
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (_) => controller.submit(),
+                          decoration: const InputDecoration(
+                            labelText: 'Confirmer le nouveau mot de passe',
+                          ),
+                          validator: controller.validateConfirm,
+                        )),
+                    const SizedBox(height: 24),
+
+                    Obx(() => FilledButton(
+                          onPressed:
+                              controller.loading.value ? null : controller.submit,
+                          child: controller.loading.value
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2.2, color: Colors.white),
+                                )
+                              : const Text('Mettre à jour'),
+                        )),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
