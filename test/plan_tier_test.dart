@@ -109,4 +109,30 @@ void main() {
       expect(stored.mergedWith(downgraded).tier, PlanTier.free);
     });
   });
+
+  group('UserModel.withTier', () {
+    test('lifts entitlements without touching anything else', () {
+      // Backs the development override: the member is shown the paid screens,
+      // but their identity and real plan name are untouched.
+      final free = UserModel.fromJson({
+        'id': 'u1',
+        'name': 'Test',
+        'email': 'test@example.com',
+        'bio': 'Bonjour',
+        'plan': {'tier': 'Free', 'name': 'Gratuit'},
+      });
+
+      final lifted = free.withTier(PlanTier.prestige);
+
+      expect(lifted.canSendMessages, isTrue);
+      expect(lifted.canUseAdvancedFilters, isTrue);
+      expect(lifted.weeklySuperLikes, 6);
+
+      expect(lifted.id, free.id);
+      expect(lifted.name, free.name);
+      expect(lifted.bio, free.bio);
+      expect(lifted.planName, 'Gratuit');
+      expect(free.canSendMessages, isFalse, reason: 'original must not change');
+    });
+  });
 }

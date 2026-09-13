@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 
 import '../../core/constants/api_constants.dart';
+import '../../core/dev_flags.dart';
 import '../../core/localization/translation_keys.dart';
 import '../../routes/app_routes.dart';
+import '../models/plan_model.dart';
 import '../models/user_model.dart';
 import '../providers/api_client.dart';
 import 'storage_service.dart';
@@ -23,7 +25,7 @@ class AuthService extends GetxService {
     ApiClient.onUnauthenticated = _forceSignOut;
 
     final cached = StorageService.to.cachedUser;
-    if (cached != null) _user.value = UserModel.fromJson(cached);
+    if (cached != null) _user.value = _withDevOverrides(UserModel.fromJson(cached));
     return this;
   }
 
@@ -73,9 +75,10 @@ class AuthService extends GetxService {
       final body = await _api.get(ApiConstants.me);
       final fresh = UserModel.fromJson(Map<String, dynamic>.from(body['user'] as Map));
       final merged = _user.value?.mergedWith(fresh) ?? fresh;
-      _user.value = merged;
+      // Cache the real tier; only what the UI reads is overridden.
       await StorageService.to.saveUser(merged.toJson());
-      return merged;
+      _user.value = _withDevOverrides(merged);
+      return _user.value;
     } on ApiException {
       // A dead session has already been handled by ApiClient.onUnauthenticated.
       return null;
@@ -88,9 +91,9 @@ class AuthService extends GetxService {
   Future<UserModel> updateProfile(Map<String, dynamic> fields) async {
     final body = await _api.patch(ApiConstants.me, body: fields);
     final user = UserModel.fromJson(Map<String, dynamic>.from(body['user'] as Map));
-    _user.value = user;
     await StorageService.to.saveUser(user.toJson());
-    return user;
+    _user.value = _withDevOverrides(user);
+    return _user.value!;
   }
 
   Future<UserModel> _persistSession(Map<String, dynamic> body) async {
@@ -101,10 +104,16 @@ class AuthService extends GetxService {
     await StorageService.to.saveToken(token);
 
     final user = UserModel.fromJson(Map<String, dynamic>.from(body['user'] as Map));
-    _user.value = user;
     await StorageService.to.saveUser(user.toJson());
-    return user;
+    _user.value = _withDevOverrides(user);
+    return _user.value!;
   }
+
+  /// Applies the development tier override, if it is switched on and this is a
+  /// debug build. The stored copy keeps the real tier — only what the screens
+  /// read is lifted, and the server is unaffected either way.
+  UserModel _withDevOverrides(UserModel user) =>
+      DevFlags.previewAsPrestige ? user.withTier(PlanTier.prestige) : user;
 
   Future<void> signOut() async {
     await StorageService.to.clear();

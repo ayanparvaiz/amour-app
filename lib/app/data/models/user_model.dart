@@ -92,6 +92,27 @@ class UserModel {
     );
   }
 
+  /// Same member, different tier. Used by the development override that shows
+  /// the paid screens without a subscription — see `DevFlags.previewAsPrestige`.
+  UserModel withTier(PlanTier newTier) => UserModel(
+        id: id,
+        name: name,
+        email: email,
+        role: role,
+        gender: gender,
+        lookingFor: lookingFor,
+        ageRange: ageRange,
+        age: age,
+        location: location,
+        photo: photo,
+        photos: photos,
+        bio: bio,
+        planName: planName,
+        tier: newTier,
+        subscriptionStatus: subscriptionStatus,
+        subscriptionExpiry: subscriptionExpiry,
+      );
+
   /// `GET /users/me` returns fewer fields than `PATCH /users/me` — it drops
   /// photos, bio, coordinates and most profile detail. Merging rather than
   /// replacing keeps the richer values that an earlier profile save gave us,
