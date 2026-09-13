@@ -1,0 +1,23 @@
+# Launcher icons for Android and iOS.
+# Regenerate after changing any of the source images:
+#   dart run flutter_launcher_icons
+flutter_launcher_icons:
+  # Legacy Android icon and every iOS size come from the full square mark.
+  image_path: "assets/images/logo.png"
+
+  android: true
+  ios: true
+
+  # Android 8+ draws an adaptive icon: the launcher masks these two layers to
+  # whatever shape the device uses (circle, squircle, teardrop), so the mark
+  # lives in the foreground with enough margin to survive the tightest mask.
+  adaptive_icon_background: "assets/images/logo_background.png"
+  adaptive_icon_foreground: "assets/images/logo_foreground.png"
+
+  # Android 13+ themed icon: the launcher tints a monochrome layer to match the
+  # user's wallpaper. Reusing the foreground keeps the heart recognisable.
+  adaptive_icon_monochrome: "assets/images/logo_foreground.png"
+
+  # The App Store rejects icons containing an alpha channel; logo.png has none,
+  # and this removes any that the tooling would otherwise introduce.
+  remove_alpha_ios: true
