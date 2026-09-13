@@ -1,0 +1,31 @@
+# The screen the operating system draws while Flutter is still starting up.
+# Without this it is a blank white rectangle, which is what "no splash" looks
+# like to anyone opening the app.
+#
+# Regenerate after changing the logo:
+#   dart run flutter_native_splash:create
+#
+# The colours are the app's own background tokens, so this screen and the Dart
+# SplashView that follows it paint the same ground and the handover is invisible.
+flutter_native_splash:
+  color: "#FCFCFC"        # AppColors.background
+  color_dark: "#121013"   # AppColors.backgroundDark
+
+  image: assets/images/logo_rounded.png
+  image_dark: assets/images/logo_rounded.png
+
+  android: true
+  ios: true
+
+  # Android 12+ ignores the classic splash and uses its own API, which masks the
+  # image to a circle and shows it smaller, so it needs its own entry.
+  android_12:
+    color: "#FCFCFC"
+    color_dark: "#121013"
+    image: assets/images/logo_rounded.png
+    image_dark: assets/images/logo_rounded.png
+
+  # Draw under the status and navigation bars so the colour fills the screen.
+  android_gravity: center
+  ios_content_mode: center
+  fullscreen: false
