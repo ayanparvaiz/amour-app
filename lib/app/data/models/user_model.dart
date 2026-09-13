@@ -14,6 +14,17 @@ class UserModel {
     this.photo,
     this.photos = const [],
     this.bio,
+    this.hobbies,
+    this.favoriteActivities,
+    this.zodiacSign,
+    this.religion,
+    this.children,
+    this.height,
+    this.weight,
+    this.eyeColor,
+    this.hairColor,
+    this.smoke,
+    this.alcohol,
     this.planName,
     this.tier = PlanTier.free,
     this.subscriptionStatus,
@@ -33,6 +44,21 @@ class UserModel {
   final String? photo;
   final List<String> photos;
   final String? bio;
+
+  /// Profile detail. `PATCH /users/me` returns all of it; `GET /users/me`
+  /// returns none of it, which is why [mergedWith] keeps what it already has.
+  final String? hobbies;
+  final String? favoriteActivities;
+  final String? zodiacSign;
+  final String? religion;
+  final String? children;
+  final String? height;
+  final String? weight;
+  final String? eyeColor;
+  final String? hairColor;
+  final String? smoke;
+  final String? alcohol;
+
   final String? planName;
   final PlanTier tier;
   final String? subscriptionStatus;
@@ -103,6 +129,17 @@ class UserModel {
       photo: json['photo'] as String?,
       photos: (json['photos'] as List?)?.map((e) => e.toString()).toList() ?? const [],
       bio: json['bio'] as String?,
+      hobbies: json['hobbies'] as String?,
+      favoriteActivities: json['favoriteActivities'] as String?,
+      zodiacSign: json['zodiacSign'] as String?,
+      religion: json['religion'] as String?,
+      children: json['children'] as String?,
+      height: json['height'] as String?,
+      weight: json['weight'] as String?,
+      eyeColor: json['eyeColor'] as String?,
+      hairColor: json['hairColor'] as String?,
+      smoke: json['smoke'] as String?,
+      alcohol: json['alcohol'] as String?,
       planName: planMap?['name'] as String?,
       tier: PlanTier.parse(planMap?['tier'] as String?),
       subscriptionStatus: json['subscriptionStatus'] as String?,
@@ -126,6 +163,17 @@ class UserModel {
         photo: photo,
         photos: photos,
         bio: bio,
+        hobbies: hobbies,
+        favoriteActivities: favoriteActivities,
+        zodiacSign: zodiacSign,
+        religion: religion,
+        children: children,
+        height: height,
+        weight: weight,
+        eyeColor: eyeColor,
+        hairColor: hairColor,
+        smoke: smoke,
+        alcohol: alcohol,
         // The stored plan's name would contradict the new tier — "Free" above a
         // Prestige allowance — so the label falls back to the tier itself.
         planName: null,
@@ -152,6 +200,17 @@ class UserModel {
         photo: fresh.photo ?? photo,
         photos: fresh.photos.isNotEmpty ? fresh.photos : photos,
         bio: fresh.bio ?? bio,
+        hobbies: fresh.hobbies ?? hobbies,
+        favoriteActivities: fresh.favoriteActivities ?? favoriteActivities,
+        zodiacSign: fresh.zodiacSign ?? zodiacSign,
+        religion: fresh.religion ?? religion,
+        children: fresh.children ?? children,
+        height: fresh.height ?? height,
+        weight: fresh.weight ?? weight,
+        eyeColor: fresh.eyeColor ?? eyeColor,
+        hairColor: fresh.hairColor ?? hairColor,
+        smoke: fresh.smoke ?? smoke,
+        alcohol: fresh.alcohol ?? alcohol,
         planName: fresh.planName ?? planName,
         tier: fresh.tier,
         subscriptionStatus: fresh.subscriptionStatus ?? subscriptionStatus,
@@ -172,6 +231,17 @@ class UserModel {
         'photo': photo,
         'photos': photos,
         'bio': bio,
+        'hobbies': hobbies,
+        'favoriteActivities': favoriteActivities,
+        'zodiacSign': zodiacSign,
+        'religion': religion,
+        'children': children,
+        'height': height,
+        'weight': weight,
+        'eyeColor': eyeColor,
+        'hairColor': hairColor,
+        'smoke': smoke,
+        'alcohol': alcohol,
         'plan': {'name': planName, 'tier': tier.name},
         'subscriptionStatus': subscriptionStatus,
         'subscriptionExpiry': subscriptionExpiry?.toIso8601String(),

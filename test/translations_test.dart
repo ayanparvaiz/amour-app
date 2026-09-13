@@ -85,6 +85,8 @@ void main() {
       TrKeys.navMenu,
       TrKeys.discoverMessage,
       TrKeys.cBlond,
+      TrKeys.profileReligion,
+      TrKeys.profileHeightCm,
     };
 
     final copied = en.keys

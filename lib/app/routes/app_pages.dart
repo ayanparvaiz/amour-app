@@ -12,6 +12,8 @@ import '../modules/discover/discover_view.dart';
 import '../modules/home/home_controller.dart';
 import '../modules/home/home_view.dart';
 import '../modules/placeholder/placeholder_view.dart';
+import '../modules/profile/profile_controller.dart';
+import '../modules/profile/profile_view.dart';
 import '../modules/profile_setup/profile_setup_controller.dart';
 import '../modules/profile_setup/profile_setup_view.dart';
 import '../modules/splash/splash_view.dart';
@@ -46,6 +48,15 @@ class DiscoverBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<DiscoverController>(() => DiscoverController());
+  }
+}
+
+class ProfileBinding extends Bindings {
+  @override
+  void dependencies() {
+    // Not lazy: the controller reads Get.arguments, which is only the current
+    // route's while the page is being built.
+    Get.put<ProfileController>(ProfileController());
   }
 }
 
@@ -103,6 +114,12 @@ class AppPages {
       binding: DiscoverBinding(),
     ),
 
+    GetPage(
+      name: AppRoutes.profile,
+      page: () => const ProfileView(),
+      binding: ProfileBinding(),
+    ),
+
     // Still to be built. They are registered rather than omitted so every
     // drawer entry leads somewhere and the flow can be walked now.
     ..._comingNext,
@@ -112,7 +129,6 @@ class AppPages {
     for (final (route, titleKey) in <(String, String)>[
       (AppRoutes.matches, TrKeys.navMatches),
       (AppRoutes.messages, TrKeys.navMessages),
-      (AppRoutes.profile, TrKeys.navProfile),
       (AppRoutes.plans, TrKeys.navPlans),
       (AppRoutes.settings, TrKeys.navSettings),
       (AppRoutes.terms, TrKeys.navTerms),

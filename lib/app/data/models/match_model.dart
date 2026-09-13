@@ -19,6 +19,8 @@ class MatchModel {
     this.religion,
     this.children,
     this.height,
+    this.eyeColor,
+    this.hairColor,
     this.smoke,
     this.alcohol,
     this.matchPercent,
@@ -38,6 +40,8 @@ class MatchModel {
   final String? religion;
   final String? children;
   final String? height;
+  final String? eyeColor;
+  final String? hairColor;
   final String? smoke;
   final String? alcohol;
   final int? matchPercent;
@@ -72,6 +76,8 @@ class MatchModel {
       religion: nonEmpty(json['religion']),
       children: nonEmpty(json['children']),
       height: nonEmpty(json['height']),
+      eyeColor: nonEmpty(json['eyeColor']),
+      hairColor: nonEmpty(json['hairColor']),
       smoke: nonEmpty(json['smoke']),
       alcohol: nonEmpty(json['alcohol']),
       matchPercent: (json['matchPercent'] as num?)?.toInt(),

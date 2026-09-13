@@ -264,6 +264,47 @@ abstract class TrKeys {
   static const cRed = 'c_red';
   static const cWhite = 'c_white';
 
+  // --- Profile ------------------------------------------------------------
+  static const profileNotFound = 'profile_not_found';
+  static const profileNotFoundBody = 'profile_not_found_body';
+  static const profileBackToDiscover = 'profile_back_to_discover';
+  static const profileAboutMe = 'profile_about_me';
+  static const profileAboutOther = 'profile_about_other';
+  static const profileNoBio = 'profile_no_bio';
+  static const profileQuickInfo = 'profile_quick_info';
+  static const profileMyPreferences = 'profile_my_preferences';
+  static const profileDetails = 'profile_details';
+  static const profileEdit = 'profile_edit';
+  static const profileSubscription = 'profile_subscription';
+  static const profileIAm = 'profile_i_am';
+  static const profileLookingFor = 'profile_looking_for';
+  static const profileNotSet = 'profile_not_set';
+  static const profileAdd = 'profile_add';
+  static const profileSafetyTitle = 'profile_safety_title';
+  static const profileSafetyBody = 'profile_safety_body';
+  static const profileLike = 'profile_like';
+  static const profileBlock = 'profile_block';
+  static const profileReport = 'profile_report';
+  static const profileBlockTitle = 'profile_block_title';
+  static const profileBlockBody = 'profile_block_body';
+  static const profileBlocked = 'profile_blocked';
+  static const profileReportTitle = 'profile_report_title';
+  static const profileReportHint = 'profile_report_hint';
+  static const profileReportSend = 'profile_report_send';
+  static const profileReported = 'profile_reported';
+  static const profileHobbies = 'profile_hobbies';
+  static const profileActivities = 'profile_activities';
+  static const profileZodiac = 'profile_zodiac';
+  static const profileReligion = 'profile_religion';
+  static const profileChildren = 'profile_children';
+  static const profileHeight = 'profile_height';
+  static const profileHeightCm = 'profile_height_cm';
+  static const profileEyes = 'profile_eyes';
+  static const profileHair = 'profile_hair';
+  static const profileSmoke = 'profile_smoke';
+  static const profileAlcohol = 'profile_alcohol';
+  static const profileGender = 'profile_gender';
+
   // --- Placeholders ------------------------------------------------------
   static const comingSoon = 'coming_soon';
   static const registerPlaceholderNote = 'register_placeholder_note';
