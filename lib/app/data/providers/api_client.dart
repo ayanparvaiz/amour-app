@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+// GetX is imported for `.tr`; http.Response stays prefixed so the two
+// `Response` types never collide.
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../core/constants/api_constants.dart';
+import '../../core/localization/translation_keys.dart';
 import '../services/storage_service.dart';
 
 /// Thrown for any non-successful response. [code] carries the backend's own
@@ -98,9 +102,9 @@ class ApiClient {
     try {
       response = await request().timeout(_timeout);
     } on TimeoutException {
-      throw ApiException('Le serveur met trop de temps à répondre.');
+      throw ApiException(TrKeys.serverTooSlow.tr);
     } catch (_) {
-      throw ApiException('Impossible de contacter le serveur. Vérifiez votre connexion.');
+      throw ApiException(TrKeys.cannotReachServer.tr);
     }
 
     Map<String, dynamic> body = const {};
@@ -111,7 +115,7 @@ class ApiClient {
       } on FormatException {
         // nginx can return an HTML error page; fall through to the status check.
         throw ApiException(
-          'Réponse inattendue du serveur (${response.statusCode}).',
+          TrKeys.unexpectedResponse.trParams({'code': '${response.statusCode}'}),
           statusCode: response.statusCode,
         );
       }
@@ -121,23 +125,23 @@ class ApiClient {
     final message = (body['message'] ?? '').toString();
 
     if (code == ApiErrorCodes.accountSuspended) {
-      onUnauthenticated?.call("Votre compte a été suspendu par l'administrateur.");
+      onUnauthenticated?.call(TrKeys.accountSuspended.tr);
       throw ApiException(message, statusCode: response.statusCode, code: code);
     }
     if (code == ApiErrorCodes.accountDeleted) {
-      onUnauthenticated?.call('Votre compte a été supprimé.');
+      onUnauthenticated?.call(TrKeys.accountDeleted.tr);
       throw ApiException(message, statusCode: response.statusCode, code: code);
     }
     if (response.statusCode == 401 &&
         ApiErrorCodes.expiredSessionMessages.contains(message)) {
-      onUnauthenticated?.call('Votre session a expiré. Veuillez vous reconnecter.');
+      onUnauthenticated?.call(TrKeys.sessionExpired.tr);
       throw ApiException(message, statusCode: 401);
     }
 
     final ok = response.statusCode >= 200 && response.statusCode < 300;
     if (!ok || body['success'] == false) {
       throw ApiException(
-        message.isNotEmpty ? message : 'Une erreur est survenue.',
+        message.isNotEmpty ? message : TrKeys.somethingWentWrong.tr,
         statusCode: response.statusCode,
         code: code,
       );

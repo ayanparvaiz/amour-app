@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../core/constants/api_constants.dart';
+import '../../core/localization/translation_keys.dart';
 import '../../routes/app_routes.dart';
 import '../models/user_model.dart';
 import '../providers/api_client.dart';
@@ -84,7 +85,7 @@ class AuthService extends GetxService {
   Future<UserModel> _persistSession(Map<String, dynamic> body) async {
     final token = (body['token'] ?? '').toString();
     if (token.isEmpty) {
-      throw ApiException("Le serveur n'a pas renvoyé de session valide.");
+      throw ApiException(TrKeys.noValidSession.tr);
     }
     await StorageService.to.saveToken(token);
 
@@ -105,6 +106,6 @@ class AuthService extends GetxService {
     StorageService.to.clear();
     _user.value = null;
     Get.offAllNamed(AppRoutes.login);
-    Get.snackbar('Session terminée', reason, snackPosition: SnackPosition.BOTTOM);
+    Get.snackbar(TrKeys.sessionEnded.tr, reason, snackPosition: SnackPosition.BOTTOM);
   }
 }

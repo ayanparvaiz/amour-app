@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/localization/translation_keys.dart';
 import 'auth_controller.dart';
 
 /// Sends the reset email. The link inside it opens the website, where the
@@ -16,11 +17,11 @@ class ForgotPasswordView extends GetView<AuthController> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mot de passe oublié'),
+        title: Text(TrKeys.forgotPasswordTitle.tr),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: Get.back,
-          tooltip: 'Retour',
+          tooltip: TrKeys.back.tr,
         ),
       ),
       body: SafeArea(
@@ -34,11 +35,11 @@ class ForgotPasswordView extends GetView<AuthController> {
                 children: [
                   Icon(Icons.lock_reset_rounded, size: 44, color: scheme.primary),
                   const SizedBox(height: 16),
-                  Text('Réinitialiser le mot de passe',
+                  Text(TrKeys.forgotPasswordHeadline.tr,
                       style: text.headlineMedium, textAlign: TextAlign.center),
                   const SizedBox(height: 8),
                   Text(
-                    'Entrez votre email et nous vous enverrons un lien pour choisir un nouveau mot de passe.',
+                    TrKeys.forgotPasswordBlurb.tr,
                     style: text.bodySmall,
                     textAlign: TextAlign.center,
                   ),
@@ -50,9 +51,9 @@ class ForgotPasswordView extends GetView<AuthController> {
                     textInputAction: TextInputAction.done,
                     autofillHints: const [AutofillHints.email],
                     onFieldSubmitted: (_) => controller.forgotPassword(),
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      hintText: 'vous@exemple.com',
+                    decoration: InputDecoration(
+                      labelText: TrKeys.email.tr,
+                      hintText: TrKeys.emailHint.tr,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -68,7 +69,7 @@ class ForgotPasswordView extends GetView<AuthController> {
                                 child: CircularProgressIndicator(
                                     strokeWidth: 2.2, color: Colors.white),
                               )
-                            : const Text('Envoyer le lien'),
+                            : Text(TrKeys.sendLink.tr),
                       )),
                   const SizedBox(height: 16),
 
@@ -86,9 +87,7 @@ class ForgotPasswordView extends GetView<AuthController> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            'Le lien s\'ouvrira dans votre navigateur. Une fois votre '
-                            'mot de passe modifié, revenez ici pour vous connecter. '
-                            'Le lien expire après une heure.',
+                            TrKeys.resetLinkOpensBrowser.tr,
                             style: text.bodySmall,
                           ),
                         ),

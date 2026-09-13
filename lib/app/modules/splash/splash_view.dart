@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/localization/translation_keys.dart';
 import '../../core/widgets/app_logo.dart';
 import '../../data/services/auth_service.dart';
 import '../../data/services/storage_service.dart';
@@ -76,7 +77,7 @@ class _SplashViewState extends State<SplashView> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Amour Et Sincérité',
+                  TrKeys.appName.tr,
                   style: TextStyle(
                     color: scheme.onSurface,
                     fontSize: 22,

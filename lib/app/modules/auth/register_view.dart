@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/localization/translation_keys.dart';
 import '../../core/widgets/app_logo.dart';
 import 'auth_controller.dart';
 
@@ -16,11 +17,11 @@ class RegisterView extends GetView<AuthController> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Créer un compte'),
+        title: Text(TrKeys.registerTitle.tr),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: Get.back,
-          tooltip: 'Retour',
+          tooltip: TrKeys.back.tr,
         ),
       ),
       body: SafeArea(
@@ -36,7 +37,7 @@ class RegisterView extends GetView<AuthController> {
                   children: [
                     const Center(child: AppLogo(size: 64)),
                     const SizedBox(height: 18),
-                    Text('Commencez votre voyage vers l\'amour',
+                    Text(TrKeys.registerHeadline.tr,
                         style: text.headlineMedium, textAlign: TextAlign.center),
                     const SizedBox(height: 26),
 
@@ -50,9 +51,9 @@ class RegisterView extends GetView<AuthController> {
                             textCapitalization: TextCapitalization.words,
                             textInputAction: TextInputAction.next,
                             autofillHints: const [AutofillHints.givenName],
-                            decoration: const InputDecoration(
-                              labelText: 'Prénom',
-                              hintText: 'Emma',
+                            decoration: InputDecoration(
+                              labelText: TrKeys.firstName.tr,
+                              hintText: TrKeys.firstNameHint.tr,
                             ),
                             validator: controller.validateName,
                           ),
@@ -64,9 +65,9 @@ class RegisterView extends GetView<AuthController> {
                             controller: controller.ageCtrl,
                             keyboardType: TextInputType.number,
                             textInputAction: TextInputAction.next,
-                            decoration: const InputDecoration(
-                              labelText: 'Âge',
-                              hintText: '25',
+                            decoration: InputDecoration(
+                              labelText: TrKeys.age.tr,
+                              hintText: TrKeys.ageHint.tr,
                             ),
                             validator: controller.validateAge,
                           ),
@@ -80,9 +81,9 @@ class RegisterView extends GetView<AuthController> {
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       autofillHints: const [AutofillHints.email],
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        hintText: 'vous@exemple.com',
+                      decoration: InputDecoration(
+                        labelText: TrKeys.email.tr,
+                        hintText: TrKeys.emailHint.tr,
                       ),
                       validator: controller.validateEmail,
                     ),
@@ -95,15 +96,15 @@ class RegisterView extends GetView<AuthController> {
                           autofillHints: const [AutofillHints.newPassword],
                           onFieldSubmitted: (_) => controller.register(),
                           decoration: InputDecoration(
-                            labelText: 'Mot de passe',
+                            labelText: TrKeys.password.tr,
                             suffixIcon: IconButton(
                               icon: Icon(controller.obscurePassword.value
                                   ? Icons.visibility_outlined
                                   : Icons.visibility_off_outlined),
                               onPressed: controller.toggleObscure,
                               tooltip: controller.obscurePassword.value
-                                  ? 'Afficher le mot de passe'
-                                  : 'Masquer le mot de passe',
+                                  ? TrKeys.showPassword.tr
+                                  : TrKeys.hidePassword.tr,
                             ),
                           ),
                           validator: controller.validatePassword,
@@ -120,24 +121,25 @@ class RegisterView extends GetView<AuthController> {
                                   child: CircularProgressIndicator(
                                       strokeWidth: 2.2, color: Colors.white),
                                 )
-                              : const Text('Créer un compte'),
+                              : Text(TrKeys.createAccount.tr),
                         )),
                     const SizedBox(height: 14),
 
                     Text(
-                      'Vous devez avoir au moins 18 ans pour vous inscrire.',
+                      TrKeys.minimumAgeNotice.tr,
                       style: text.bodySmall,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        Text('Vous avez déjà un compte ?', style: text.bodySmall),
+                        Text(TrKeys.alreadyHaveAccount.tr, style: text.bodySmall),
                         TextButton(
                           onPressed: Get.back,
-                          child: const Text('Se connecter'),
+                          child: Text(TrKeys.signIn.tr),
                         ),
                       ],
                     ),

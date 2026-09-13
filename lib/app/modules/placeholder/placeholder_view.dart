@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/localization/translation_keys.dart';
+
 /// Stands in for screens that are scheduled but not built yet, so every route
 /// resolves and the app can be navigated end to end. Replace each use as the
 /// real screen lands.
@@ -29,7 +31,7 @@ class PlaceholderView extends StatelessWidget {
               Text(title, style: text.headlineMedium, textAlign: TextAlign.center),
               const SizedBox(height: 8),
               Text(
-                note ?? 'Cet écran sera construit prochainement.',
+                note ?? TrKeys.comingSoon.tr,
                 style: text.bodySmall,
                 textAlign: TextAlign.center,
               ),
@@ -37,7 +39,7 @@ class PlaceholderView extends StatelessWidget {
               if (Navigator.of(context).canPop())
                 OutlinedButton(
                   onPressed: Get.back,
-                  child: const Text('Retour'),
+                  child: Text(TrKeys.back.tr),
                 ),
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/localization/translation_keys.dart';
 import 'password_controller.dart';
 
 /// Changing the password while signed in. The website puts this inside its
@@ -12,11 +13,11 @@ class ChangePasswordView extends GetView<PasswordController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Changer le mot de passe'),
+        title: Text(TrKeys.changePasswordTitle.tr),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
           onPressed: Get.back,
-          tooltip: 'Retour',
+          tooltip: TrKeys.back.tr,
         ),
       ),
       body: SafeArea(
@@ -36,15 +37,15 @@ class ChangePasswordView extends GetView<PasswordController> {
                           textInputAction: TextInputAction.next,
                           autofillHints: const [AutofillHints.password],
                           decoration: InputDecoration(
-                            labelText: 'Mot de passe actuel',
+                            labelText: TrKeys.currentPassword.tr,
                             suffixIcon: IconButton(
                               icon: Icon(controller.obscure.value
                                   ? Icons.visibility_outlined
                                   : Icons.visibility_off_outlined),
                               onPressed: controller.toggleObscure,
                               tooltip: controller.obscure.value
-                                  ? 'Afficher les mots de passe'
-                                  : 'Masquer les mots de passe',
+                                  ? TrKeys.showPasswords.tr
+                                  : TrKeys.hidePasswords.tr,
                             ),
                           ),
                           validator: controller.validateCurrent,
@@ -56,8 +57,8 @@ class ChangePasswordView extends GetView<PasswordController> {
                           obscureText: controller.obscure.value,
                           textInputAction: TextInputAction.next,
                           autofillHints: const [AutofillHints.newPassword],
-                          decoration: const InputDecoration(
-                            labelText: 'Nouveau mot de passe',
+                          decoration: InputDecoration(
+                            labelText: TrKeys.newPassword.tr,
                           ),
                           validator: controller.validateNew,
                         )),
@@ -68,8 +69,8 @@ class ChangePasswordView extends GetView<PasswordController> {
                           obscureText: controller.obscure.value,
                           textInputAction: TextInputAction.done,
                           onFieldSubmitted: (_) => controller.submit(),
-                          decoration: const InputDecoration(
-                            labelText: 'Confirmer le nouveau mot de passe',
+                          decoration: InputDecoration(
+                            labelText: TrKeys.confirmNewPassword.tr,
                           ),
                           validator: controller.validateConfirm,
                         )),
@@ -85,7 +86,7 @@ class ChangePasswordView extends GetView<PasswordController> {
                                   child: CircularProgressIndicator(
                                       strokeWidth: 2.2, color: Colors.white),
                                 )
-                              : const Text('Mettre à jour'),
+                              : Text(TrKeys.update.tr),
                         )),
                   ],
                 ),

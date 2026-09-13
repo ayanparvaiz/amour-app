@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/localization/translation_keys.dart';
 import '../../core/widgets/app_logo.dart';
 import '../../routes/app_routes.dart';
 import 'auth_controller.dart';
@@ -28,10 +29,10 @@ class LoginView extends GetView<AuthController> {
                   children: [
                     const Center(child: AppLogo(size: 76)),
                     const SizedBox(height: 20),
-                    Text('Bon retour parmi nous',
+                    Text(TrKeys.loginTitle.tr,
                         style: text.headlineMedium, textAlign: TextAlign.center),
                     const SizedBox(height: 6),
-                    Text('Connectez-vous pour continuer',
+                    Text(TrKeys.loginSubtitle.tr,
                         style: text.bodySmall, textAlign: TextAlign.center),
                     const SizedBox(height: 30),
 
@@ -40,9 +41,9 @@ class LoginView extends GetView<AuthController> {
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       autofillHints: const [AutofillHints.email],
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        hintText: 'vous@exemple.com',
+                      decoration: InputDecoration(
+                        labelText: TrKeys.email.tr,
+                        hintText: TrKeys.emailHint.tr,
                       ),
                       validator: controller.validateEmail,
                     ),
@@ -55,15 +56,15 @@ class LoginView extends GetView<AuthController> {
                           autofillHints: const [AutofillHints.password],
                           onFieldSubmitted: (_) => controller.login(),
                           decoration: InputDecoration(
-                            labelText: 'Mot de passe',
+                            labelText: TrKeys.password.tr,
                             suffixIcon: IconButton(
                               icon: Icon(controller.obscurePassword.value
                                   ? Icons.visibility_outlined
                                   : Icons.visibility_off_outlined),
                               onPressed: controller.toggleObscure,
                               tooltip: controller.obscurePassword.value
-                                  ? 'Afficher le mot de passe'
-                                  : 'Masquer le mot de passe',
+                                  ? TrKeys.showPassword.tr
+                                  : TrKeys.hidePassword.tr,
                             ),
                           ),
                           validator: controller.validatePassword,
@@ -73,7 +74,7 @@ class LoginView extends GetView<AuthController> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () => Get.toNamed(AppRoutes.forgotPassword),
-                        child: const Text('Mot de passe oublié ?'),
+                        child: Text(TrKeys.forgotPasswordLink.tr),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -87,17 +88,18 @@ class LoginView extends GetView<AuthController> {
                                   child: CircularProgressIndicator(
                                       strokeWidth: 2.2, color: Colors.white),
                                 )
-                              : const Text('Se connecter'),
+                              : Text(TrKeys.signIn.tr),
                         )),
                     const SizedBox(height: 18),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        Text("Vous n'avez pas de compte ?", style: text.bodySmall),
+                        Text(TrKeys.noAccountYet.tr, style: text.bodySmall),
                         TextButton(
                           onPressed: () => Get.toNamed(AppRoutes.register),
-                          child: const Text("S'inscrire"),
+                          child: Text(TrKeys.signUp.tr),
                         ),
                       ],
                     ),

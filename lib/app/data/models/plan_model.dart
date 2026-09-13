@@ -1,3 +1,7 @@
+import 'package:get/get.dart';
+
+import '../../core/localization/translation_keys.dart';
+
 /// Subscription tiers, in ascending order of entitlement.
 ///
 /// The backend's Plan schema permits both `Essential` and `Essentiel`. Live data
@@ -29,8 +33,10 @@ enum PlanTier {
   /// Premium and Prestige only.
   bool get isUpperTier => this == PlanTier.premium || this == PlanTier.prestige;
 
+  /// Only the free tier is translated — the paid tiers are product names and
+  /// read the same in both languages.
   String get label => switch (this) {
-        PlanTier.free => 'Gratuit',
+        PlanTier.free => TrKeys.tierFree.tr,
         PlanTier.essential => 'Essential',
         PlanTier.premium => 'Premium',
         PlanTier.prestige => 'Prestige',

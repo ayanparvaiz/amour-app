@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../core/localization/translation_keys.dart';
 import '../modules/auth/auth_controller.dart';
 import '../modules/auth/change_password_view.dart';
 import '../modules/auth/forgot_password_view.dart';
@@ -61,9 +62,9 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.profileSetup,
-      page: () => const PlaceholderView(
-        title: 'Votre profil',
-        note: 'Les neuf étapes de configuration du profil arrivent ensuite.',
+      page: () => PlaceholderView(
+        title: TrKeys.yourProfile.tr,
+        note: TrKeys.profileSetupNote.tr,
       ),
     ),
     GetPage(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/localization/translation_keys.dart';
 import '../../core/theme/app_colors.dart';
 import '../../data/services/auth_service.dart';
 
@@ -16,11 +17,11 @@ class HomeView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Amour Et Sincérité'),
+        title: Text(TrKeys.appName.tr),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout_rounded),
-            tooltip: 'Se déconnecter',
+            tooltip: TrKeys.signOut.tr,
             onPressed: AuthService.to.signOut,
           ),
         ],
@@ -36,7 +37,8 @@ class HomeView extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
-              Text('Bonjour ${user.name} 👋', style: text.headlineLarge),
+              Text(TrKeys.greeting.trParams({'name': user.name}),
+                  style: text.headlineLarge),
               const SizedBox(height: 6),
               Text(user.email, style: text.bodySmall),
               const SizedBox(height: 22),
@@ -52,19 +54,25 @@ class HomeView extends StatelessWidget {
                           const Icon(Icons.workspace_premium_outlined,
                               size: 20, color: AppColors.primary),
                           const SizedBox(width: 8),
-                          Text(user.planName ?? user.tier.label,
-                              style: text.titleMedium),
+                          Expanded(
+                            child: Text(user.planName ?? user.tier.label,
+                                style: text.titleMedium),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 14),
-                      _Entitlement('Envoyer des messages', user.canSendMessages),
-                      _Entitlement('Voir qui vous a liké', user.canSeeWhoLikedYou),
-                      _Entitlement('Filtres avancés', user.canUseAdvancedFilters),
-                      _Entitlement('Visiteurs du profil', user.canSeeProfileVisitors),
+                      _Entitlement(TrKeys.entSendMessages.tr, user.canSendMessages),
+                      _Entitlement(
+                          TrKeys.entSeeWhoLikedYou.tr, user.canSeeWhoLikedYou),
+                      _Entitlement(
+                          TrKeys.entAdvancedFilters.tr, user.canUseAdvancedFilters),
+                      _Entitlement(
+                          TrKeys.entProfileVisitors.tr, user.canSeeProfileVisitors),
                       _Entitlement(
                         user.canSuperLike
-                            ? 'Super Likes (${user.weeklySuperLikes}/semaine)'
-                            : 'Super Likes',
+                            ? TrKeys.entSuperLikesWithQuota
+                                .trParams({'count': '${user.weeklySuperLikes}'})
+                            : TrKeys.entSuperLikes.tr,
                         user.canSuperLike,
                       ),
                     ],
@@ -74,7 +82,7 @@ class HomeView extends StatelessWidget {
               const SizedBox(height: 20),
 
               Text(
-                'Les écrans de l\'application arrivent ensuite.',
+                TrKeys.screensComingNext.tr,
                 style: text.bodySmall,
                 textAlign: TextAlign.center,
               ),

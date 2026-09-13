@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/constants/api_constants.dart';
+import '../../core/localization/translation_keys.dart';
 import '../../data/providers/api_client.dart';
 
 /// Changing a password while signed in. Separate from [AuthController] because
@@ -33,17 +34,17 @@ class PasswordController extends GetxController {
   void toggleObscure() => obscure.toggle();
 
   String? validateCurrent(String? v) =>
-      (v ?? '').isEmpty ? 'Entrez votre mot de passe actuel' : null;
+      (v ?? '').isEmpty ? TrKeys.enterCurrentPassword.tr : null;
 
   String? validateNew(String? v) {
-    if ((v ?? '').isEmpty) return 'Entrez le nouveau mot de passe';
-    if ((v ?? '').length < 6) return 'Au moins 6 caractères';
-    if (v == currentCtrl.text) return 'Choisissez un mot de passe différent';
+    if ((v ?? '').isEmpty) return TrKeys.enterNewPassword.tr;
+    if ((v ?? '').length < 6) return TrKeys.passwordTooShort.tr;
+    if (v == currentCtrl.text) return TrKeys.chooseDifferentPassword.tr;
     return null;
   }
 
   String? validateConfirm(String? v) =>
-      v != newCtrl.text ? 'Les mots de passe ne correspondent pas' : null;
+      v != newCtrl.text ? TrKeys.passwordsDoNotMatch.tr : null;
 
   Future<void> submit() async {
     if (!(formKey.currentState?.validate() ?? false)) return;
@@ -61,12 +62,12 @@ class PasswordController extends GetxController {
 
       Get.back();
       Get.snackbar(
-        'Mot de passe modifié',
-        'Votre mot de passe a été mis à jour 🎉',
+        TrKeys.passwordChanged.tr,
+        TrKeys.passwordChangedBody.tr,
         snackPosition: SnackPosition.BOTTOM,
       );
     } on ApiException catch (e) {
-      Get.snackbar('Erreur', e.message, snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar(TrKeys.error.tr, e.message, snackPosition: SnackPosition.BOTTOM);
     } finally {
       loading.value = false;
     }
