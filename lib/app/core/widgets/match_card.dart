@@ -16,7 +16,6 @@ class MatchCard extends StatelessWidget {
     required this.match,
     this.onTap,
     this.width,
-    this.photoAspectRatio = 1,
     this.onLike,
     this.onPass,
     this.onMessage,
@@ -27,9 +26,6 @@ class MatchCard extends StatelessWidget {
 
   /// Fixed width for a horizontal row. Null lets a grid decide.
   final double? width;
-
-  /// 1 for the square cards in the home row, 3/4 for the taller grid ones.
-  final double photoAspectRatio;
 
   /// Supplying all three adds the action row under the name. Omitting them
   /// leaves the card as a plain link to the profile.
@@ -58,24 +54,25 @@ class MatchCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
-                  children: [
-                    // A square photo area keeps every card the same height
-                    // whatever the image, so the row never looks ragged.
-                    AspectRatio(
-                      aspectRatio: photoAspectRatio,
-                      child: MemberAvatar.fill(
+                // The photo takes whatever height is left once the name and
+                // actions have had theirs, so the card fits its box at any
+                // width instead of relying on a guessed aspect ratio.
+                Expanded(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      MemberAvatar.fill(
                         initial: match.initial,
                         photo: match.photo,
                       ),
-                    ),
-                    if (percent != null)
-                      Positioned(
-                        top: 8,
-                        left: 8,
-                        child: _PercentBadge(percent: percent),
-                      ),
-                  ],
+                      if (percent != null)
+                        Positioned(
+                          top: 8,
+                          left: 8,
+                          child: _PercentBadge(percent: percent),
+                        ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),

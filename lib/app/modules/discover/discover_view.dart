@@ -79,18 +79,19 @@ class DiscoverView extends GetView<DiscoverController> {
                 sliver: SliverGrid(
                   gridDelegate:
                       const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 260,
+                    maxCrossAxisExtent: 230,
                     mainAxisSpacing: 14,
                     crossAxisSpacing: 14,
-                    // Photo at 3:4, then the name and the action row beneath.
-                    childAspectRatio: 0.58,
+                    // Tall enough for the name, location and action row with
+                    // the photo filling the rest; the card no longer depends
+                    // on this being exact.
+                    childAspectRatio: 0.62,
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (_, i) {
                       final profile = controller.profiles[i];
                       return MatchCard(
                         match: profile,
-                        photoAspectRatio: 3 / 4,
                         onTap: () => Get.toNamed(AppRoutes.profile,
                             arguments: profile.id),
                         onLike: () => controller.like(profile),
