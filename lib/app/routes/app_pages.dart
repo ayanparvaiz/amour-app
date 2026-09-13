@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 
-import '../core/localization/translation_keys.dart';
 import '../modules/auth/auth_controller.dart';
 import '../modules/auth/change_password_view.dart';
 import '../modules/auth/forgot_password_view.dart';
@@ -8,7 +7,8 @@ import '../modules/auth/login_view.dart';
 import '../modules/auth/password_controller.dart';
 import '../modules/auth/register_view.dart';
 import '../modules/home/home_view.dart';
-import '../modules/placeholder/placeholder_view.dart';
+import '../modules/profile_setup/profile_setup_controller.dart';
+import '../modules/profile_setup/profile_setup_view.dart';
 import '../modules/splash/splash_view.dart';
 import 'app_routes.dart';
 
@@ -27,6 +27,13 @@ class PasswordBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<PasswordController>(() => PasswordController());
+  }
+}
+
+class ProfileSetupBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<ProfileSetupController>(() => ProfileSetupController());
   }
 }
 
@@ -62,10 +69,8 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.profileSetup,
-      page: () => PlaceholderView(
-        title: TrKeys.yourProfile.tr,
-        note: TrKeys.profileSetupNote.tr,
-      ),
+      page: () => const ProfileSetupView(),
+      binding: ProfileSetupBinding(),
     ),
     GetPage(
       name: AppRoutes.home,

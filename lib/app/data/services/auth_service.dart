@@ -82,6 +82,17 @@ class AuthService extends GetxService {
     }
   }
 
+  /// Saves profile fields. Unlike [refresh], the response from `PATCH
+  /// /users/me` carries every field, so it replaces the cached user outright
+  /// rather than being merged into it.
+  Future<UserModel> updateProfile(Map<String, dynamic> fields) async {
+    final body = await _api.patch(ApiConstants.me, body: fields);
+    final user = UserModel.fromJson(Map<String, dynamic>.from(body['user'] as Map));
+    _user.value = user;
+    await StorageService.to.saveUser(user.toJson());
+    return user;
+  }
+
   Future<UserModel> _persistSession(Map<String, dynamic> body) async {
     final token = (body['token'] ?? '').toString();
     if (token.isEmpty) {

@@ -103,6 +103,77 @@ abstract class TrKeys {
   /// product names and stay as they are in both languages.
   static const tierFree = 'tier_free';
 
+  // --- Profile setup wizard ----------------------------------------------
+  static const psStepOf = 'ps_step_of';
+  static const psNext = 'ps_next';
+  static const psFindProfiles = 'ps_find_profiles';
+  static const psSaving = 'ps_saving';
+  static const psSavingTitle = 'ps_saving_title';
+  static const psSavingBlurb = 'ps_saving_blurb';
+
+  static const psGenderTitle = 'ps_gender_title';
+  static const psAMan = 'ps_a_man';
+  static const psAWoman = 'ps_a_woman';
+
+  static const psAgeTitle = 'ps_age_title';
+  static const psAgeBlurb = 'ps_age_blurb';
+  static const psAgeFieldHint = 'ps_age_field_hint';
+  static const psAgeNotice = 'ps_age_notice';
+
+  static const psLookingForTitle = 'ps_looking_for_title';
+  static const psMan = 'ps_man';
+  static const psWoman = 'ps_woman';
+  static const psEveryone = 'ps_everyone';
+
+  static const psAgeRangeTitle = 'ps_age_range_title';
+
+  static const psLocationTitle = 'ps_location_title';
+  static const psLocationHint = 'ps_location_hint';
+
+  static const psPhotoTitle = 'ps_photo_title';
+  static const psChoosePhoto = 'ps_choose_photo';
+  static const psChangePhoto = 'ps_change_photo';
+  static const psRemovePhoto = 'ps_remove_photo';
+  static const psTakePhoto = 'ps_take_photo';
+  static const psFromGallery = 'ps_from_gallery';
+  static const psPhotoError = 'ps_photo_error';
+
+  static const psAboutTitle = 'ps_about_title';
+  static const psBioLabel = 'ps_bio_label';
+  static const psBioHint = 'ps_bio_hint';
+  static const psHobbiesLabel = 'ps_hobbies_label';
+  static const psHobbiesHint = 'ps_hobbies_hint';
+
+  static const psDetailsTitle = 'ps_details_title';
+  static const psZodiacLabel = 'ps_zodiac_label';
+  static const psSelect = 'ps_select';
+  static const psReligionLabel = 'ps_religion_label';
+  static const psHeightLabel = 'ps_height_label';
+  static const psHeightHint = 'ps_height_hint';
+
+  static const psReadyTitle = 'ps_ready_title';
+  static const psReadyBlurb = 'ps_ready_blurb';
+  static const psSummaryAge = 'ps_summary_age';
+  static const psSummaryGender = 'ps_summary_gender';
+  static const psSummaryLocation = 'ps_summary_location';
+  static const psYearsOld = 'ps_years_old';
+
+  /// Star signs are stored in French whatever the interface language, because
+  /// matching compares the stored strings between members. These keys label the
+  /// options; the value sent to the server stays French.
+  static const zAries = 'z_aries';
+  static const zTaurus = 'z_taurus';
+  static const zGemini = 'z_gemini';
+  static const zCancer = 'z_cancer';
+  static const zLeo = 'z_leo';
+  static const zVirgo = 'z_virgo';
+  static const zLibra = 'z_libra';
+  static const zScorpio = 'z_scorpio';
+  static const zSagittarius = 'z_sagittarius';
+  static const zCapricorn = 'z_capricorn';
+  static const zAquarius = 'z_aquarius';
+  static const zPisces = 'z_pisces';
+
   // --- Placeholders ------------------------------------------------------
   static const comingSoon = 'coming_soon';
   static const registerPlaceholderNote = 'register_placeholder_note';

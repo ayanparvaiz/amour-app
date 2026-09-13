@@ -87,6 +87,7 @@ void main() {
       TrKeys.firstNameHint,
       TrKeys.ageHint,
       TrKeys.entSuperLikes,
+      TrKeys.zCancer, // spelled the same in both languages
     };
 
     final copied = en.keys
