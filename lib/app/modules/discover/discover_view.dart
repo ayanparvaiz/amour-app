@@ -96,7 +96,7 @@ class DiscoverView extends GetView<DiscoverController> {
                             arguments: profile.id),
                         onLike: () => controller.like(profile),
                         onPass: () => controller.pass(profile),
-                        onMessage: () => Get.toNamed(AppRoutes.messages,
+                        onMessage: () => Get.toNamed(AppRoutes.chat,
                             arguments: profile.id),
                       );
                     },

@@ -7,6 +7,7 @@ import '../../routes/app_routes.dart';
 import '../models/plan_model.dart';
 import '../models/user_model.dart';
 import '../providers/api_client.dart';
+import 'socket_service.dart';
 import 'storage_service.dart';
 
 /// Holds the signed-in member for the whole app. Injected permanently, so any
@@ -25,7 +26,10 @@ class AuthService extends GetxService {
     ApiClient.onUnauthenticated = _forceSignOut;
 
     final cached = StorageService.to.cachedUser;
-    if (cached != null) _user.value = _withDevOverrides(UserModel.fromJson(cached));
+    if (cached != null) {
+      _user.value = _withDevOverrides(UserModel.fromJson(cached));
+      _openSocket();
+    }
     return this;
   }
 
@@ -106,7 +110,18 @@ class AuthService extends GetxService {
     final user = UserModel.fromJson(Map<String, dynamic>.from(body['user'] as Map));
     await StorageService.to.saveUser(user.toJson());
     _user.value = _withDevOverrides(user);
+    _openSocket();
     return _user.value!;
+  }
+
+  /// The socket follows the session: it needs the member's id to register, so
+  /// it cannot open before sign-in and must close on the way out.
+  void _openSocket() {
+    if (Get.isRegistered<SocketService>()) SocketService.to.connect();
+  }
+
+  void _closeSocket() {
+    if (Get.isRegistered<SocketService>()) SocketService.to.disconnect();
   }
 
   /// Applies the development tier override, if it is switched on and this is a
@@ -116,6 +131,7 @@ class AuthService extends GetxService {
       DevFlags.previewAsPrestige ? user.withTier(PlanTier.prestige) : user;
 
   Future<void> signOut() async {
+    _closeSocket();
     await StorageService.to.clear();
     _user.value = null;
     Get.offAllNamed(AppRoutes.login);
@@ -123,6 +139,7 @@ class AuthService extends GetxService {
 
   void _forceSignOut(String reason) {
     if (!StorageService.to.hasToken) return; // already signed out
+    _closeSocket();
     StorageService.to.clear();
     _user.value = null;
     Get.offAllNamed(AppRoutes.login);

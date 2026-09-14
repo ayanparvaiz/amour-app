@@ -5,6 +5,7 @@ import 'app/core/dev_flags.dart';
 import 'app/core/localization/app_translations.dart';
 import 'app/core/theme/app_theme.dart';
 import 'app/data/services/auth_service.dart';
+import 'app/data/services/socket_service.dart';
 import 'app/data/services/storage_service.dart';
 import 'app/routes/app_pages.dart';
 
@@ -16,6 +17,8 @@ Future<void> main() async {
 
   // Order matters: AuthService reads the cached session out of StorageService.
   await Get.putAsync(() => StorageService().init(), permanent: true);
+  // Before AuthService, which opens the socket as soon as it finds a session.
+  await Get.putAsync(() => SocketService().init(), permanent: true);
   await Get.putAsync(() => AuthService().init(), permanent: true);
 
   runApp(const AmourApp());

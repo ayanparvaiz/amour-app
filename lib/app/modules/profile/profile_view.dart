@@ -40,7 +40,7 @@ class ProfileView extends GetView<ProfileController> {
                       onEdit: () => Get.toNamed(AppRoutes.editProfile),
                       onLike: controller.like,
                       onMessage: () =>
-                          Get.toNamed(AppRoutes.messages, arguments: member.id),
+                          Get.toNamed(AppRoutes.chat, arguments: member.id),
                       onBlock: controller.block,
                       onReport: controller.report,
                     )),

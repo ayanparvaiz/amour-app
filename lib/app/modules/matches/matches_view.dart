@@ -83,7 +83,7 @@ class _MutualTab extends GetView<MatchesController> {
         // Already matched, so there is nothing left to like or pass — only to
         // start a conversation.
         buildActions: (member) => MatchCardActions(
-          onMessage: () => Get.toNamed(AppRoutes.messages, arguments: member.id),
+          onMessage: () => Get.toNamed(AppRoutes.chat, arguments: member.id),
         ),
       );
     });
@@ -116,7 +116,7 @@ class _ReceivedTab extends GetView<MatchesController> {
         buildActions: (member) => MatchCardActions(
           onLike: () => controller.like(member),
           onPass: () => controller.pass(member),
-          onMessage: () => Get.toNamed(AppRoutes.messages, arguments: member.id),
+          onMessage: () => Get.toNamed(AppRoutes.chat, arguments: member.id),
         ),
       );
     });

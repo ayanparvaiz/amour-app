@@ -405,6 +405,23 @@ class AppTranslations extends Translations {
     TrKeys.setDeleteWord: 'DELETE',
     TrKeys.setDeleted: 'Your account has been deleted.',
 
+    // Messages
+    TrKeys.msgNoChatsTitle: 'No conversations yet',
+    TrKeys.msgNoChatsBody:
+        'Like a profile and send the first message to get started.',
+    TrKeys.msgStartConversation: 'Start the conversation',
+    TrKeys.msgWriteSomething: 'Say hello 👋',
+    TrKeys.msgInputHint: 'Write a message...',
+    TrKeys.msgOnline: 'Online',
+    TrKeys.msgSend: 'Send',
+    TrKeys.msgFreeBlockedTitle: 'Messaging is for paid members',
+    TrKeys.msgFreeBlockedBody:
+        'Upgrade to write to the people you have matched with. You can still '
+            'read what you receive.',
+    TrKeys.msgToday: 'Today',
+    TrKeys.msgYesterday: 'Yesterday',
+    TrKeys.msgSending: 'Sending...',
+
     // Placeholders
     TrKeys.comingSoon: 'This screen will be built soon.',
     TrKeys.registerPlaceholderNote:
@@ -811,6 +828,23 @@ class AppTranslations extends Translations {
     TrKeys.setDeleteTypeToConfirm: 'Tapez @word pour confirmer',
     TrKeys.setDeleteWord: 'SUPPRIMER',
     TrKeys.setDeleted: 'Votre compte a été supprimé.',
+
+    // Messages
+    TrKeys.msgNoChatsTitle: 'Aucune conversation',
+    TrKeys.msgNoChatsBody:
+        'Likez un profil et envoyez le premier message pour commencer.',
+    TrKeys.msgStartConversation: 'Commencez la conversation',
+    TrKeys.msgWriteSomething: 'Dites bonjour 👋',
+    TrKeys.msgInputHint: 'Écrire un message...',
+    TrKeys.msgOnline: 'En ligne',
+    TrKeys.msgSend: 'Envoyer',
+    TrKeys.msgFreeBlockedTitle: 'La messagerie est réservée aux forfaits payants',
+    TrKeys.msgFreeBlockedBody:
+        'Passez à un forfait supérieur pour écrire à vos matchs. Vous pouvez '
+            'toujours lire les messages reçus.',
+    TrKeys.msgToday: "Aujourd'hui",
+    TrKeys.msgYesterday: 'Hier',
+    TrKeys.msgSending: 'Envoi...',
 
     // Placeholders
     TrKeys.comingSoon: 'Cet écran sera construit prochainement.',

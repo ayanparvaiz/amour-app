@@ -393,6 +393,20 @@ abstract class TrKeys {
   static const setDeleteWord = 'set_delete_word';
   static const setDeleted = 'set_deleted';
 
+  // --- Messages -----------------------------------------------------------
+  static const msgNoChatsTitle = 'msg_no_chats_title';
+  static const msgNoChatsBody = 'msg_no_chats_body';
+  static const msgStartConversation = 'msg_start_conversation';
+  static const msgWriteSomething = 'msg_write_something';
+  static const msgInputHint = 'msg_input_hint';
+  static const msgOnline = 'msg_online';
+  static const msgSend = 'msg_send';
+  static const msgFreeBlockedTitle = 'msg_free_blocked_title';
+  static const msgFreeBlockedBody = 'msg_free_blocked_body';
+  static const msgToday = 'msg_today';
+  static const msgYesterday = 'msg_yesterday';
+  static const msgSending = 'msg_sending';
+
   // --- Placeholders ------------------------------------------------------
   static const comingSoon = 'coming_soon';
   static const registerPlaceholderNote = 'register_placeholder_note';

@@ -11,8 +11,12 @@ import '../modules/discover/discover_controller.dart';
 import '../modules/discover/discover_view.dart';
 import '../modules/home/home_controller.dart';
 import '../modules/home/home_view.dart';
+import '../modules/chat/chat_controller.dart';
+import '../modules/chat/chat_view.dart';
 import '../modules/matches/matches_controller.dart';
 import '../modules/matches/matches_view.dart';
+import '../modules/messages/messages_controller.dart';
+import '../modules/messages/messages_view.dart';
 import '../modules/placeholder/placeholder_view.dart';
 import '../modules/profile/profile_controller.dart';
 import '../modules/profile/profile_view.dart';
@@ -61,6 +65,22 @@ class MatchesBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<MatchesController>(() => MatchesController());
+  }
+}
+
+class MessagesBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<MessagesController>(() => MessagesController());
+  }
+}
+
+class ChatBinding extends Bindings {
+  @override
+  void dependencies() {
+    // Not lazy: the controller reads Get.arguments, which only belongs to the
+    // route being built.
+    Get.put<ChatController>(ChatController());
   }
 }
 
@@ -164,6 +184,17 @@ class AppPages {
       binding: EditProfileBinding(),
     ),
 
+    GetPage(
+      name: AppRoutes.messages,
+      page: () => const MessagesView(),
+      binding: MessagesBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.chat,
+      page: () => const ChatView(),
+      binding: ChatBinding(),
+    ),
+
     // Still to be built. They are registered rather than omitted so every
     // drawer entry leads somewhere and the flow can be walked now.
     ..._comingNext,
@@ -171,7 +202,6 @@ class AppPages {
 
   static final _comingNext = <GetPage>[
     for (final (route, titleKey) in <(String, String)>[
-      (AppRoutes.messages, TrKeys.navMessages),
       (AppRoutes.plans, TrKeys.navPlans),
       (AppRoutes.terms, TrKeys.navTerms),
       (AppRoutes.privacy, TrKeys.setPrivacy),
