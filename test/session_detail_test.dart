@@ -43,9 +43,81 @@ UserModel _detail() => UserModel.fromJson({
       'alcohol': 'Occasionnellement',
     });
 
+/// What `PATCH /users/me` replies with. It echoes every editable field the app
+/// sent — except the bio, which it stores and then does not mention.
+UserModel _saveReply({String? bio}) => UserModel.fromJson({
+      'id': 'u1',
+      'name': 'Ayan',
+      'email': 'ayan@example.com',
+      'role': 'user',
+      'gender': 'Man',
+      'lookingFor': 'Woman',
+      'ageRange': '25-35',
+      'age': 30,
+      'location': 'Paris',
+      'hobbies': 'Randonnée, cuisine',
+      'religion': 'Aucune',
+      'plan': {'name': 'Gratuit', 'tier': 'Free'},
+      'bio': ?bio,
+    });
+
 void main() {
-  // The app folds the two endpoints as `detail.mergedWith(session)`. The order
-  // is load-bearing and easy to get backwards, which is why it is pinned here:
+  // The app folds what it sent over what came back, then merges the pair onto
+  // the session. Without that the bio vanished the instant it was written:
+  // the reply omits it, and the reply used to replace the session outright.
+  group('saving a profile', () {
+    /// The same fold AuthService.updateProfile performs.
+    UserModel applySave(UserModel session, Map<String, dynamic> sent,
+        UserModel reply) {
+      final saved = UserModel.fromJson({
+        ...reply.toJson(),
+        if (sent.containsKey('bio')) 'bio': sent['bio'],
+      });
+      return session.mergedWith(saved);
+    }
+
+    test('keeps a bio the reply never echoes back', () {
+      final session = _session();
+      final merged = applySave(
+        session,
+        {'bio': 'Passionné de randonnée.'},
+        _saveReply(),
+      );
+
+      expect(merged.bio, 'Passionné de randonnée.');
+    });
+
+    test('still lets a bio be cleared on purpose', () {
+      // An emptied field arrives as '' rather than null, so it must win over
+      // whatever the session was holding.
+      final session = _detail().mergedWith(_session());
+      expect(session.bio, isNotEmpty);
+
+      final merged = applySave(session, {'bio': ''}, _saveReply());
+      expect(merged.bio, '');
+    });
+
+    test('leaves the bio alone when the save was not about it', () {
+      final session = _detail().mergedWith(_session());
+      final merged = applySave(session, {'name': 'Ayan'}, _saveReply());
+
+      expect(merged.bio, 'Passionné de randonnée.');
+    });
+
+    test('does not let the reply blank the detail it omits', () {
+      // The reply carries no photos and no star sign here; merging must keep
+      // what the session already knew rather than swapping it for nothing.
+      final session = _detail().mergedWith(_session());
+      final merged = applySave(session, {'bio': 'Salut'}, _saveReply());
+
+      expect(merged.photos.length, 2);
+      expect(merged.zodiacSign, 'Cancer');
+      expect(merged.children, 'Non');
+    });
+  });
+
+  // The two endpoints are folded as `detail.mergedWith(session)`. The order is
+  // load-bearing and easy to get backwards, which is why it is pinned here:
   // the detail record reports role 'user' and tier Free simply because it is
   // not asked about them, so merging the other way would demote an admin and
   // strip a paying member's plan on every refresh.

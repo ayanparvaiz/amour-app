@@ -128,14 +128,27 @@ class AuthService extends GetxService {
     }
   }
 
-  /// Saves profile fields. Unlike [refresh], the response from `PATCH
-  /// /users/me` carries every field, so it replaces the cached user outright
-  /// rather than being merged into it.
+  /// Saves profile fields.
+  ///
+  /// `PATCH /users/me` accepts a bio and stores it, but leaves it out of the
+  /// reply — it is the one editable field the reply does not echo back. Taking
+  /// the reply as the whole truth therefore wiped the bio from the session the
+  /// moment it was written, so the edit form came back empty and the profile
+  /// showed none, while the server had it all along.
+  ///
+  /// So what was sent stands in for what was not echoed, and the result is
+  /// merged rather than swapped in: a field the member deliberately cleared
+  /// arrives as an empty string and still clears, while one this save never
+  /// mentioned keeps the value it had.
   Future<UserModel> updateProfile(Map<String, dynamic> fields) async {
     final body = await _api.patch(ApiConstants.me, body: fields);
-    final user = UserModel.fromJson(Map<String, dynamic>.from(body['user'] as Map));
-    await StorageService.to.saveUser(user.toJson());
-    _user.value = _withDevOverrides(user);
+    final saved = UserModel.fromJson({
+      ...Map<String, dynamic>.from(body['user'] as Map),
+      if (fields.containsKey('bio')) 'bio': fields['bio'],
+    });
+    final merged = _user.value?.mergedWith(saved) ?? saved;
+    await StorageService.to.saveUser(merged.toJson());
+    _user.value = _withDevOverrides(merged);
     return _user.value!;
   }
 
