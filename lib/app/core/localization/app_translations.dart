@@ -422,6 +422,28 @@ class AppTranslations extends Translations {
     TrKeys.msgYesterday: 'Yesterday',
     TrKeys.msgSending: 'Sending...',
 
+    // Plans
+    TrKeys.planTitle: 'Choose your plan',
+    TrKeys.planSubtitle: 'Unlock what you need, for as long as you need it.',
+    TrKeys.planCurrent: 'Your plan',
+    TrKeys.planPerMonth: '€@price / month',
+    TrKeys.planPerWeek: '€@price / week',
+    TrKeys.planSave: 'Save @percent%',
+    TrKeys.planBest: 'Best price',
+    TrKeys.planRecommended: 'Recommended',
+    TrKeys.planChoose: 'Choose @plan',
+    TrKeys.planWhatYouGet: 'What you get',
+    TrKeys.planUnavailableTitle: 'Not yet available in the app',
+    TrKeys.planUnavailableBody:
+        'Subscriptions will be purchased through the App Store and Google Play. '
+            'Until that is set up, you can subscribe on the website.',
+    TrKeys.planAdminTitle: 'Administrator access',
+    TrKeys.planAdminBody: 'You already have everything, permanently.',
+    TrKeys.planEmpty: 'No plans are available at the moment.',
+    TrKeys.featUnlimitedBrowsing: 'Browse without a limit',
+    TrKeys.featFreeBrowsingLimit: 'Five profiles',
+    TrKeys.featPriority: 'Priority in search results',
+
     // Placeholders
     TrKeys.comingSoon: 'This screen will be built soon.',
     TrKeys.registerPlaceholderNote:
@@ -845,6 +867,29 @@ class AppTranslations extends Translations {
     TrKeys.msgToday: "Aujourd'hui",
     TrKeys.msgYesterday: 'Hier',
     TrKeys.msgSending: 'Envoi...',
+
+    // Plans
+    TrKeys.planTitle: 'Choisissez votre forfait',
+    TrKeys.planSubtitle:
+        "Débloquez ce dont vous avez besoin, aussi longtemps que vous en avez besoin.",
+    TrKeys.planCurrent: 'Votre forfait',
+    TrKeys.planPerMonth: '@price € / mois',
+    TrKeys.planPerWeek: '@price € / semaine',
+    TrKeys.planSave: 'Économisez @percent %',
+    TrKeys.planBest: 'Meilleur prix',
+    TrKeys.planRecommended: 'Recommandé',
+    TrKeys.planChoose: 'Choisir @plan',
+    TrKeys.planWhatYouGet: 'Ce que vous obtenez',
+    TrKeys.planUnavailableTitle: "Bientôt disponible dans l'application",
+    TrKeys.planUnavailableBody:
+        "Les abonnements passeront par l'App Store et Google Play. En attendant, "
+            'vous pouvez souscrire sur le site web.',
+    TrKeys.planAdminTitle: 'Accès administrateur',
+    TrKeys.planAdminBody: 'Vous avez déjà tout, à vie.',
+    TrKeys.planEmpty: 'Aucun forfait disponible pour le moment.',
+    TrKeys.featUnlimitedBrowsing: 'Explorer sans limite',
+    TrKeys.featFreeBrowsingLimit: 'Cinq profils',
+    TrKeys.featPriority: 'Priorité dans les résultats',
 
     // Placeholders
     TrKeys.comingSoon: 'Cet écran sera construit prochainement.',

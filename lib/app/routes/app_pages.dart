@@ -18,6 +18,8 @@ import '../modules/matches/matches_view.dart';
 import '../modules/messages/messages_controller.dart';
 import '../modules/messages/messages_view.dart';
 import '../modules/placeholder/placeholder_view.dart';
+import '../modules/plans/plans_controller.dart';
+import '../modules/plans/plans_view.dart';
 import '../modules/profile/profile_controller.dart';
 import '../modules/profile/profile_view.dart';
 import '../modules/profile_setup/profile_setup_controller.dart';
@@ -81,6 +83,13 @@ class ChatBinding extends Bindings {
     // Not lazy: the controller reads Get.arguments, which only belongs to the
     // route being built.
     Get.put<ChatController>(ChatController());
+  }
+}
+
+class PlansBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<PlansController>(() => PlansController());
   }
 }
 
@@ -195,6 +204,12 @@ class AppPages {
       binding: ChatBinding(),
     ),
 
+    GetPage(
+      name: AppRoutes.plans,
+      page: () => const PlansView(),
+      binding: PlansBinding(),
+    ),
+
     // Still to be built. They are registered rather than omitted so every
     // drawer entry leads somewhere and the flow can be walked now.
     ..._comingNext,
@@ -202,7 +217,6 @@ class AppPages {
 
   static final _comingNext = <GetPage>[
     for (final (route, titleKey) in <(String, String)>[
-      (AppRoutes.plans, TrKeys.navPlans),
       (AppRoutes.terms, TrKeys.navTerms),
       (AppRoutes.privacy, TrKeys.setPrivacy),
       (AppRoutes.admin, TrKeys.navAdmin),

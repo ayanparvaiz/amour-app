@@ -407,6 +407,29 @@ abstract class TrKeys {
   static const msgYesterday = 'msg_yesterday';
   static const msgSending = 'msg_sending';
 
+  // --- Plans --------------------------------------------------------------
+  static const planTitle = 'plan_title';
+  static const planSubtitle = 'plan_subtitle';
+  static const planCurrent = 'plan_current';
+  static const planPerMonth = 'plan_per_month';
+  static const planPerWeek = 'plan_per_week';
+  static const planSave = 'plan_save';
+  static const planBest = 'plan_best';
+  static const planRecommended = 'plan_recommended';
+  static const planChoose = 'plan_choose';
+  static const planWhatYouGet = 'plan_what_you_get';
+  static const planUnavailableTitle = 'plan_unavailable_title';
+  static const planUnavailableBody = 'plan_unavailable_body';
+  static const planAdminTitle = 'plan_admin_title';
+  static const planAdminBody = 'plan_admin_body';
+  static const planEmpty = 'plan_empty';
+
+  /// Features are listed from what the server actually enforces, not from the
+  /// website's marketing copy — four of those claims have nothing behind them.
+  static const featUnlimitedBrowsing = 'feat_unlimited_browsing';
+  static const featFreeBrowsingLimit = 'feat_free_browsing_limit';
+  static const featPriority = 'feat_priority';
+
   // --- Placeholders ------------------------------------------------------
   static const comingSoon = 'coming_soon';
   static const registerPlaceholderNote = 'register_placeholder_note';
