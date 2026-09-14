@@ -18,6 +18,8 @@ import '../modules/profile/profile_controller.dart';
 import '../modules/profile/profile_view.dart';
 import '../modules/profile_setup/profile_setup_controller.dart';
 import '../modules/profile_setup/profile_setup_view.dart';
+import '../modules/edit_profile/edit_profile_controller.dart';
+import '../modules/edit_profile/edit_profile_view.dart';
 import '../modules/settings/settings_controller.dart';
 import '../modules/settings/settings_view.dart';
 import '../modules/splash/splash_view.dart';
@@ -75,6 +77,13 @@ class SettingsBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<SettingsController>(() => SettingsController());
+  }
+}
+
+class EditProfileBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<EditProfileController>(() => EditProfileController());
   }
 }
 
@@ -149,6 +158,11 @@ class AppPages {
       page: () => const SettingsView(),
       binding: SettingsBinding(),
     ),
+    GetPage(
+      name: AppRoutes.editProfile,
+      page: () => const EditProfileView(),
+      binding: EditProfileBinding(),
+    ),
 
     // Still to be built. They are registered rather than omitted so every
     // drawer entry leads somewhere and the flow can be walked now.
@@ -160,6 +174,7 @@ class AppPages {
       (AppRoutes.messages, TrKeys.navMessages),
       (AppRoutes.plans, TrKeys.navPlans),
       (AppRoutes.terms, TrKeys.navTerms),
+      (AppRoutes.privacy, TrKeys.setPrivacy),
       (AppRoutes.admin, TrKeys.navAdmin),
     ])
       GetPage(

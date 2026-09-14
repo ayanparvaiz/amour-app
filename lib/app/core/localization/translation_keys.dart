@@ -378,6 +378,21 @@ abstract class TrKeys {
   static const setSmokeSometimes = 'set_smoke_sometimes';
   static const setSmokeYes = 'set_smoke_yes';
 
+  // --- Settings menu ------------------------------------------------------
+  static const setMenuAccount = 'set_menu_account';
+  static const setMenuLegal = 'set_menu_legal';
+  static const setMenuDanger = 'set_menu_danger';
+  static const setEditProfile = 'set_edit_profile';
+  static const setEditProfileBody = 'set_edit_profile_body';
+  static const setPrivacy = 'set_privacy';
+  static const setDeleteAccount = 'set_delete_account';
+  static const setDeleteBody = 'set_delete_body';
+  static const setDeleteConfirmTitle = 'set_delete_confirm_title';
+  static const setDeleteConfirmBody = 'set_delete_confirm_body';
+  static const setDeleteTypeToConfirm = 'set_delete_type_to_confirm';
+  static const setDeleteWord = 'set_delete_word';
+  static const setDeleted = 'set_deleted';
+
   // --- Placeholders ------------------------------------------------------
   static const comingSoon = 'coming_soon';
   static const registerPlaceholderNote = 'register_placeholder_note';

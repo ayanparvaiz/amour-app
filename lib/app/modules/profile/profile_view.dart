@@ -37,7 +37,7 @@ class ProfileView extends GetView<ProfileController> {
                 child: Obx(() => ProfileContent(
                       member: member,
                       busy: controller.acting.value,
-                      onEdit: () => Get.toNamed(AppRoutes.settings),
+                      onEdit: () => Get.toNamed(AppRoutes.editProfile),
                       onLike: controller.like,
                       onMessage: () =>
                           Get.toNamed(AppRoutes.messages, arguments: member.id),
@@ -292,26 +292,17 @@ class _Actions extends StatelessWidget {
     );
 
     if (member.isOwn) {
-      return Row(
-        children: [
-          Expanded(
-            child: FilledButton.icon(
-              onPressed: onEdit,
-              style: tight,
-              icon: const Icon(Icons.edit_outlined, size: 18),
-              label: Text(TrKeys.profileEdit.tr, overflow: TextOverflow.ellipsis, maxLines: 1),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: onEdit,
-              style: tight,
-              icon: const Icon(Icons.settings_outlined, size: 18),
-              label: Text(TrKeys.navSettings.tr, overflow: TextOverflow.ellipsis, maxLines: 1),
-            ),
-          ),
-        ],
+      // One action, not two: settings is its own screen in the drawer, and
+      // having both buttons land on the same place read as a mistake.
+      return SizedBox(
+        width: double.infinity,
+        child: FilledButton.icon(
+          onPressed: onEdit,
+          style: tight,
+          icon: const Icon(Icons.edit_outlined, size: 18),
+          label: Text(TrKeys.profileEdit.tr,
+              overflow: TextOverflow.ellipsis, maxLines: 1),
+        ),
       );
     }
 
@@ -482,7 +473,7 @@ class _Details extends StatelessWidget {
             icon: icon,
             label: label,
             value: value,
-            onTap: member.isOwn ? () => Get.toNamed(AppRoutes.settings) : null,
+            onTap: member.isOwn ? () => Get.toNamed(AppRoutes.editProfile) : null,
           ),
       ],
     );

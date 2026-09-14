@@ -179,6 +179,9 @@ void main() {
       expect(find.text('Premium (1 Mois)'), findsOneWidget);
       expect(find.text('Mes préférences'), findsOneWidget);
       expect(find.text('Modifier'), findsOneWidget);
+      // Settings is a drawer destination of its own; the profile does not
+      // repeat it as a second button that goes to the same place.
+      expect(find.text('Paramètres'), findsNothing);
     });
 
     testWidgets('offers no like, block or report on yourself', (tester) async {

@@ -388,6 +388,23 @@ class AppTranslations extends Translations {
     TrKeys.setSmokeSometimes: 'Occasionally',
     TrKeys.setSmokeYes: 'Yes',
 
+    // Settings menu
+    TrKeys.setMenuAccount: 'Account',
+    TrKeys.setMenuLegal: 'Legal',
+    TrKeys.setMenuDanger: 'Danger zone',
+    TrKeys.setEditProfile: 'Edit profile',
+    TrKeys.setEditProfileBody: 'Photos, description, preferences',
+    TrKeys.setPrivacy: 'Privacy policy',
+    TrKeys.setDeleteAccount: 'Delete my account',
+    TrKeys.setDeleteBody: 'Permanently removes your profile and messages',
+    TrKeys.setDeleteConfirmTitle: 'Delete your account?',
+    TrKeys.setDeleteConfirmBody:
+        'Your profile, photos, matches and messages are removed for good. This '
+            'cannot be undone.',
+    TrKeys.setDeleteTypeToConfirm: 'Type @word to confirm',
+    TrKeys.setDeleteWord: 'DELETE',
+    TrKeys.setDeleted: 'Your account has been deleted.',
+
     // Placeholders
     TrKeys.comingSoon: 'This screen will be built soon.',
     TrKeys.registerPlaceholderNote:
@@ -777,6 +794,23 @@ class AppTranslations extends Translations {
     TrKeys.setSmokeNo: 'Non',
     TrKeys.setSmokeSometimes: 'Occasionnellement',
     TrKeys.setSmokeYes: 'Oui',
+
+    // Settings menu
+    TrKeys.setMenuAccount: 'Compte',
+    TrKeys.setMenuLegal: 'Informations légales',
+    TrKeys.setMenuDanger: 'Zone sensible',
+    TrKeys.setEditProfile: 'Modifier le profil',
+    TrKeys.setEditProfileBody: 'Photos, description, préférences',
+    TrKeys.setPrivacy: 'Politique de confidentialité',
+    TrKeys.setDeleteAccount: 'Supprimer mon compte',
+    TrKeys.setDeleteBody: 'Supprime définitivement votre profil et vos messages',
+    TrKeys.setDeleteConfirmTitle: 'Supprimer votre compte ?',
+    TrKeys.setDeleteConfirmBody:
+        'Votre profil, vos photos, vos matchs et vos messages seront supprimés '
+            'définitivement. Cette action est irréversible.',
+    TrKeys.setDeleteTypeToConfirm: 'Tapez @word pour confirmer',
+    TrKeys.setDeleteWord: 'SUPPRIMER',
+    TrKeys.setDeleted: 'Votre compte a été supprimé.',
 
     // Placeholders
     TrKeys.comingSoon: 'Cet écran sera construit prochainement.',

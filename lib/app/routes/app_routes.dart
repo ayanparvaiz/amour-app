@@ -21,6 +21,8 @@ abstract class AppRoutes {
   static const chat = '/chat';
   static const profile = '/profile';
   static const settings = '/settings';
+  static const editProfile = '/edit-profile';
+  static const privacy = '/privacy';
   static const plans = '/plans';
   static const terms = '/terms';
 
