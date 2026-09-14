@@ -33,7 +33,8 @@ class MatchCard extends StatelessWidget {
   final VoidCallback? onPass;
   final VoidCallback? onMessage;
 
-  bool get _hasActions => onLike != null && onPass != null;
+  bool get _hasActions =>
+      onLike != null || onPass != null || onMessage != null;
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +114,8 @@ class MatchCard extends StatelessWidget {
                       if (_hasActions) ...[
                         const SizedBox(height: 12),
                         _Actions(
-                          onLike: onLike!,
-                          onPass: onPass!,
+                          onLike: onLike,
+                          onPass: onPass,
                           onMessage: onMessage,
                         ),
                       ],
@@ -134,43 +135,51 @@ class MatchCard extends StatelessWidget {
 /// Pass, like and message — the same three the website puts under each card,
 /// with like given the most weight.
 class _Actions extends StatelessWidget {
-  const _Actions({required this.onLike, required this.onPass, this.onMessage});
+  const _Actions({this.onLike, this.onPass, this.onMessage});
 
-  final VoidCallback onLike;
-  final VoidCallback onPass;
+  final VoidCallback? onLike;
+  final VoidCallback? onPass;
   final VoidCallback? onMessage;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _RoundAction(
-          icon: Icons.close_rounded,
-          tooltip: TrKeys.discoverPass.tr,
-          onTap: onPass,
-          foreground: scheme.onSurfaceVariant,
-          border: scheme.outline,
-        ),
-        _RoundAction(
-          icon: Icons.favorite_rounded,
-          tooltip: TrKeys.discoverLike.tr,
-          onTap: onLike,
-          foreground: Colors.white,
-          background: scheme.primary,
-          size: 44,
-        ),
-        if (onMessage != null)
-          _RoundAction(
-            icon: Icons.chat_bubble_outline_rounded,
-            tooltip: TrKeys.discoverMessage.tr,
-            onTap: onMessage!,
-            foreground: scheme.primary,
-            border: scheme.outline,
-          ),
-      ],
+    // Two columns on a 320px screen leave about 110px inside the card, which
+    // is narrower than three buttons. Scaling down beats overflowing, and on
+    // any normal width nothing is scaled at all.
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          if (onPass != null)
+            _RoundAction(
+              icon: Icons.close_rounded,
+              tooltip: TrKeys.discoverPass.tr,
+              onTap: onPass!,
+              foreground: scheme.onSurfaceVariant,
+              border: scheme.outline,
+            ),
+          if (onLike != null)
+            _RoundAction(
+              icon: Icons.favorite_rounded,
+              tooltip: TrKeys.discoverLike.tr,
+              onTap: onLike!,
+              foreground: Colors.white,
+              background: scheme.primary,
+              size: 44,
+            ),
+          if (onMessage != null)
+            _RoundAction(
+              icon: Icons.chat_bubble_outline_rounded,
+              tooltip: TrKeys.discoverMessage.tr,
+              onTap: onMessage!,
+              foreground: scheme.primary,
+              border: scheme.outline,
+            ),
+        ],
+      ),
     );
   }
 }

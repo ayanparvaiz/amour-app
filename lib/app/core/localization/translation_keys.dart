@@ -305,6 +305,24 @@ abstract class TrKeys {
   static const profileAlcohol = 'profile_alcohol';
   static const profileGender = 'profile_gender';
 
+  // --- Matches ------------------------------------------------------------
+  static const matchesTitle = 'matches_title';
+  static const matchesSubtitle = 'matches_subtitle';
+  static const matchesTabMutual = 'matches_tab_mutual';
+  static const matchesTabReceived = 'matches_tab_received';
+  static const matchesTabSent = 'matches_tab_sent';
+  static const matchesNoneTitle = 'matches_none_title';
+  static const matchesNoneBody = 'matches_none_body';
+  static const matchesStartDiscovering = 'matches_start_discovering';
+  static const matchesNoLikesTitle = 'matches_no_likes_title';
+  static const matchesNoLikesBody = 'matches_no_likes_body';
+  static const matchesNoSentTitle = 'matches_no_sent_title';
+  static const matchesNoSentBody = 'matches_no_sent_body';
+  static const matchesLockedTitle = 'matches_locked_title';
+  static const matchesLockedOne = 'matches_locked_one';
+  static const matchesLockedMany = 'matches_locked_many';
+  static const matchesSeePlans = 'matches_see_plans';
+
   // --- Placeholders ------------------------------------------------------
   static const comingSoon = 'coming_soon';
   static const registerPlaceholderNote = 'register_placeholder_note';

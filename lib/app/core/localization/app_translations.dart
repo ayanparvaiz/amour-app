@@ -312,6 +312,28 @@ class AppTranslations extends Translations {
     TrKeys.profileAlcohol: 'Drinking',
     TrKeys.profileGender: 'Gender',
 
+    // Matches
+    TrKeys.matchesTitle: 'My connections',
+    TrKeys.matchesSubtitle: 'Who liked you, and the feelings that were mutual.',
+    TrKeys.matchesTabMutual: 'Matches',
+    TrKeys.matchesTabReceived: 'Received',
+    TrKeys.matchesTabSent: 'Sent',
+    TrKeys.matchesNoneTitle: 'No matches yet',
+    TrKeys.matchesNoneBody:
+        'Widen your preferences in Discover and new profiles will appear here.',
+    TrKeys.matchesStartDiscovering: 'Start discovering',
+    TrKeys.matchesNoLikesTitle: 'Nobody has liked your profile yet',
+    TrKeys.matchesNoLikesBody:
+        'Add a few good photos and a description to attract more likes.',
+    TrKeys.matchesNoSentTitle: 'You have not liked anyone yet',
+    TrKeys.matchesNoSentBody: 'Do not be shy — make the first move.',
+    TrKeys.matchesLockedTitle: 'See who likes you',
+    TrKeys.matchesLockedOne:
+        'One person has already fallen for you. Upgrade to see their profile.',
+    TrKeys.matchesLockedMany:
+        '@count people have already fallen for you. Upgrade to see their profiles.',
+    TrKeys.matchesSeePlans: 'See the plans',
+
     // Placeholders
     TrKeys.comingSoon: 'This screen will be built soon.',
     TrKeys.registerPlaceholderNote:
@@ -619,6 +641,32 @@ class AppTranslations extends Translations {
     TrKeys.profileSmoke: 'Fumeur',
     TrKeys.profileAlcohol: 'Alcool',
     TrKeys.profileGender: 'Genre',
+
+    // Matches
+    TrKeys.matchesTitle: 'Mes connexions',
+    TrKeys.matchesSubtitle:
+        'Découvrez qui vous a aimé et vos coups de cœur réciproques.',
+    TrKeys.matchesTabMutual: 'Matchs',
+    TrKeys.matchesTabReceived: 'Reçus',
+    TrKeys.matchesTabSent: 'Envoyés',
+    TrKeys.matchesNoneTitle: 'Aucun match pour le moment',
+    TrKeys.matchesNoneBody:
+        'Élargissez vos critères dans Découvrir et de nouveaux profils '
+            'apparaîtront ici.',
+    TrKeys.matchesStartDiscovering: 'Commencer à découvrir',
+    TrKeys.matchesNoLikesTitle: "Personne n'a encore liké votre profil",
+    TrKeys.matchesNoLikesBody:
+        'Ajoutez de belles photos et une description pour attirer plus de likes.',
+    TrKeys.matchesNoSentTitle: "Vous n'avez encore liké personne",
+    TrKeys.matchesNoSentBody: "N'hésitez pas à faire le premier pas.",
+    TrKeys.matchesLockedTitle: 'Découvrez qui vous aime',
+    TrKeys.matchesLockedOne:
+        'Une personne a déjà craqué pour vous. Passez à un forfait supérieur '
+            'pour voir son profil.',
+    TrKeys.matchesLockedMany:
+        '@count personnes ont déjà craqué pour vous. Passez à un forfait '
+            'supérieur pour voir leurs profils.',
+    TrKeys.matchesSeePlans: 'Voir les forfaits',
 
     // Placeholders
     TrKeys.comingSoon: 'Cet écran sera construit prochainement.',
