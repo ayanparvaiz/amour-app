@@ -18,6 +18,8 @@ import '../modules/profile/profile_controller.dart';
 import '../modules/profile/profile_view.dart';
 import '../modules/profile_setup/profile_setup_controller.dart';
 import '../modules/profile_setup/profile_setup_view.dart';
+import '../modules/settings/settings_controller.dart';
+import '../modules/settings/settings_view.dart';
 import '../modules/splash/splash_view.dart';
 import 'app_routes.dart';
 
@@ -66,6 +68,13 @@ class ProfileBinding extends Bindings {
     // Not lazy: the controller reads Get.arguments, which is only the current
     // route's while the page is being built.
     Get.put<ProfileController>(ProfileController());
+  }
+}
+
+class SettingsBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<SettingsController>(() => SettingsController());
   }
 }
 
@@ -135,6 +144,12 @@ class AppPages {
       binding: MatchesBinding(),
     ),
 
+    GetPage(
+      name: AppRoutes.settings,
+      page: () => const SettingsView(),
+      binding: SettingsBinding(),
+    ),
+
     // Still to be built. They are registered rather than omitted so every
     // drawer entry leads somewhere and the flow can be walked now.
     ..._comingNext,
@@ -144,7 +159,6 @@ class AppPages {
     for (final (route, titleKey) in <(String, String)>[
       (AppRoutes.messages, TrKeys.navMessages),
       (AppRoutes.plans, TrKeys.navPlans),
-      (AppRoutes.settings, TrKeys.navSettings),
       (AppRoutes.terms, TrKeys.navTerms),
       (AppRoutes.admin, TrKeys.navAdmin),
     ])

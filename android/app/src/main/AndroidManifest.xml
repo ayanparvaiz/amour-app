@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Distance-based search only needs a rough position, so the coarse
+         permission is enough and is the less intrusive of the two. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <application
         android:label="amour_app"
         android:name="${applicationName}"

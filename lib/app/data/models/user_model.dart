@@ -25,6 +25,9 @@ class UserModel {
     this.hairColor,
     this.smoke,
     this.alcohol,
+    this.country,
+    this.department,
+    this.city,
     this.planName,
     this.tier = PlanTier.free,
     this.subscriptionStatus,
@@ -58,6 +61,9 @@ class UserModel {
   final String? hairColor;
   final String? smoke;
   final String? alcohol;
+  final String? country;
+  final String? department;
+  final String? city;
 
   final String? planName;
   final PlanTier tier;
@@ -140,6 +146,9 @@ class UserModel {
       hairColor: json['hairColor'] as String?,
       smoke: json['smoke'] as String?,
       alcohol: json['alcohol'] as String?,
+      country: json['country'] as String?,
+      department: json['department'] as String?,
+      city: json['city'] as String?,
       planName: planMap?['name'] as String?,
       tier: PlanTier.parse(planMap?['tier'] as String?),
       subscriptionStatus: json['subscriptionStatus'] as String?,
@@ -174,6 +183,9 @@ class UserModel {
         hairColor: hairColor,
         smoke: smoke,
         alcohol: alcohol,
+        country: country,
+        department: department,
+        city: city,
         // The stored plan's name would contradict the new tier — "Free" above a
         // Prestige allowance — so the label falls back to the tier itself.
         planName: null,
@@ -211,6 +223,9 @@ class UserModel {
         hairColor: fresh.hairColor ?? hairColor,
         smoke: fresh.smoke ?? smoke,
         alcohol: fresh.alcohol ?? alcohol,
+        country: fresh.country ?? country,
+        department: fresh.department ?? department,
+        city: fresh.city ?? city,
         planName: fresh.planName ?? planName,
         tier: fresh.tier,
         subscriptionStatus: fresh.subscriptionStatus ?? subscriptionStatus,
@@ -242,6 +257,9 @@ class UserModel {
         'hairColor': hairColor,
         'smoke': smoke,
         'alcohol': alcohol,
+        'country': country,
+        'department': department,
+        'city': city,
         'plan': {'name': planName, 'tier': tier.name},
         'subscriptionStatus': subscriptionStatus,
         'subscriptionExpiry': subscriptionExpiry?.toIso8601String(),

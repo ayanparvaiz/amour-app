@@ -87,6 +87,7 @@ void main() {
       TrKeys.cBlond,
       TrKeys.profileReligion,
       TrKeys.profileHeightCm,
+      TrKeys.setBio,
     };
 
     final copied = en.keys

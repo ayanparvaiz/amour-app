@@ -323,6 +323,61 @@ abstract class TrKeys {
   static const matchesLockedMany = 'matches_locked_many';
   static const matchesSeePlans = 'matches_see_plans';
 
+  // --- Settings -----------------------------------------------------------
+  static const setTitle = 'set_title';
+  static const setSave = 'set_save';
+  static const setSaving = 'set_saving';
+  static const setSaved = 'set_saved';
+  static const setPhotos = 'set_photos';
+  static const setPhotosHint = 'set_photos_hint';
+  static const setPhotoMain = 'set_photo_main';
+  static const setPhotoMakeMain = 'set_photo_make_main';
+  static const setAdd = 'set_add';
+  static const setDisplayName = 'set_display_name';
+  static const setBio = 'set_bio';
+  static const setBioHint = 'set_bio_hint';
+  static const setMyGender = 'set_my_gender';
+  static const setLookingFor = 'set_looking_for';
+  static const setTargetAgeRange = 'set_target_age_range';
+  static const setSectionLocation = 'set_section_location';
+  static const setGetPosition = 'set_get_position';
+  static const setUpdatePosition = 'set_update_position';
+  static const setCoordinates = 'set_coordinates';
+  static const setLocationDenied = 'set_location_denied';
+  static const setLocationOff = 'set_location_off';
+  static const setCountry = 'set_country';
+  static const setCountryHint = 'set_country_hint';
+  static const setRegion = 'set_region';
+  static const setRegionHint = 'set_region_hint';
+  static const setCity = 'set_city';
+  static const setCityHint = 'set_city_hint';
+  static const setPublicAddress = 'set_public_address';
+  static const setPublicAddressHint = 'set_public_address_hint';
+  static const setSectionInterests = 'set_section_interests';
+  static const setActivities = 'set_activities';
+  static const setActivitiesHint = 'set_activities_hint';
+  static const setReligionHint = 'set_religion_hint';
+  static const setSectionAppearance = 'set_section_appearance';
+  static const setWeight = 'set_weight';
+  static const setWeightHint = 'set_weight_hint';
+  static const setEyeColourHint = 'set_eye_colour_hint';
+  static const setHairColourHint = 'set_hair_colour_hint';
+  static const setSectionLifestyle = 'set_section_lifestyle';
+  static const setSectionSecurity = 'set_section_security';
+  static const setUnsavedTitle = 'set_unsaved_title';
+  static const setUnsavedBody = 'set_unsaved_body';
+  static const setDiscard = 'set_discard';
+
+  /// Children and smoking are stored with the vocabulary the website's own
+  /// settings form writes. See SettingsOptions for why.
+  static const setChildrenNone = 'set_children_none';
+  static const setChildrenWant = 'set_children_want';
+  static const setChildrenHave = 'set_children_have';
+  static const setChildrenDontWant = 'set_children_dont_want';
+  static const setSmokeNo = 'set_smoke_no';
+  static const setSmokeSometimes = 'set_smoke_sometimes';
+  static const setSmokeYes = 'set_smoke_yes';
+
   // --- Placeholders ------------------------------------------------------
   static const comingSoon = 'coming_soon';
   static const registerPlaceholderNote = 'register_placeholder_note';

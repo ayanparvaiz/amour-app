@@ -72,5 +72,7 @@
 	<string>Amour Et Sincérité a besoin d'accéder à vos photos pour ajouter une photo de profil.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Amour Et Sincérité a besoin de votre appareil photo pour prendre une photo de profil.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Amour Et Sincérité utilise votre position pour vous proposer des profils à proximité.</string>
 </dict>
 </plist>
