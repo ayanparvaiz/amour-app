@@ -25,18 +25,21 @@ class ChatController extends GetxController {
     String? memberId,
   })  : _repo = messages ?? MessageRepository(),
         _users = users ?? UserRepository(),
-        _seed = chat ?? (Get.arguments is ChatModel ? Get.arguments as ChatModel : null),
-        _memberId = memberId ??
-            (Get.arguments is String
-                ? Get.arguments as String
-                : (Get.arguments is ChatModel
-                    ? (Get.arguments as ChatModel).userId
-                    : null));
+        _injectedChat = chat,
+        _injectedId = memberId;
 
   final MessageRepository _repo;
   final UserRepository _users;
-  final ChatModel? _seed;
-  final String? _memberId;
+
+  /// Passed in by a test. Otherwise both arrive as the route's argument — a
+  /// ChatModel when opened from the list, a bare id when opened from a profile.
+  final ChatModel? _injectedChat;
+  final String? _injectedId;
+
+  /// Resolved in [onInit]. A binding runs before the route's arguments are
+  /// attached, so the constructor would read null and open the wrong thread.
+  ChatModel? _seed;
+  String? _memberId;
 
   final messages = <MessageModel>[].obs;
   final loading = true.obs;
@@ -63,6 +66,12 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    final argument = Get.arguments;
+    _seed = _injectedChat ?? (argument is ChatModel ? argument : null);
+    _memberId = _injectedId ??
+        (argument is String ? argument : (argument is ChatModel ? argument.userId : null));
+
     partner.value = _seed;
     load();
 

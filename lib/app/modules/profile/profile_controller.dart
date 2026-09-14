@@ -13,10 +13,18 @@ import '../../routes/app_routes.dart';
 class ProfileController extends GetxController {
   ProfileController({UserRepository? repository, String? memberId})
       : _repo = repository ?? UserRepository(),
-        _memberId = memberId ?? (Get.arguments is String ? Get.arguments as String : null);
+        _injectedId = memberId;
 
   final UserRepository _repo;
-  final String? _memberId;
+
+  /// Passed in by a test. Otherwise the id arrives as the route's argument.
+  final String? _injectedId;
+
+  /// Resolved in [onInit], never in the constructor: a binding runs before the
+  /// route's arguments are attached, so reading them any earlier sees null —
+  /// and null here means "my own profile", which is how every member's profile
+  /// turned into your own.
+  String? _memberId;
 
   final profile = Rxn<ProfileDetails>();
   final loading = true.obs;
@@ -24,12 +32,31 @@ class ProfileController extends GetxController {
   final activePhoto = 0.obs;
   final acting = false.obs;
 
-  bool get isOwn => _memberId == null || _memberId == AuthService.to.user?.id;
+  /// No id means this is your own profile. An id that happens to be yours —
+  /// tapping yourself in a list — counts as the same thing.
+  bool get isOwn {
+    if (_memberId == null || _memberId!.isEmpty) return true;
+    final myId =
+        Get.isRegistered<AuthService>() ? AuthService.to.user?.id : null;
+    return _memberId == myId;
+  }
+
+  /// Whose profile this is showing. Exposed for tests and for the header.
+  String? get memberId => _memberId;
 
   @override
   void onInit() {
     super.onInit();
+    resolveMemberId();
     load();
+  }
+
+  /// Reads whose profile was asked for. Separate from [onInit] so it can be
+  /// exercised without the screen's services being up.
+  @visibleForTesting
+  void resolveMemberId() {
+    _memberId =
+        _injectedId ?? (Get.arguments is String ? Get.arguments as String : null);
   }
 
   Future<void> load() async {
