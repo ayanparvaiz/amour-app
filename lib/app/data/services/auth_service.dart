@@ -116,8 +116,15 @@ class AuthService extends GetxService {
 
   /// The socket follows the session: it needs the member's id to register, so
   /// it cannot open before sign-in and must close on the way out.
+  ///
+  /// The id is handed over rather than looked up. This runs from inside
+  /// `init()`, and GetX only registers a service once its `init()` has
+  /// returned — so anything reaching back for AuthService here would not find
+  /// it, and the app would die on launch.
   void _openSocket() {
-    if (Get.isRegistered<SocketService>()) SocketService.to.connect();
+    final id = _user.value?.id;
+    if (id == null || id.isEmpty) return;
+    if (Get.isRegistered<SocketService>()) SocketService.to.connect(id);
   }
 
   void _closeSocket() {

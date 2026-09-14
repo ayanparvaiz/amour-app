@@ -5,7 +5,6 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../../core/constants/api_constants.dart';
 import '../models/message_model.dart';
-import 'auth_service.dart';
 
 /// The live half of messaging.
 ///
@@ -45,11 +44,19 @@ class SocketService extends GetxService {
 
   bool isOnline(String userId) => onlineUsers.contains(userId);
 
-  /// Opens the connection for the signed-in member. Safe to call repeatedly —
-  /// re-registering the same id is what the server expects after a reconnect.
-  void connect() {
-    final userId = AuthService.to.user?.id;
-    if (userId == null || userId.isEmpty) return;
+  /// The member this socket is registered as, kept so a reconnect can say who
+  /// it is again without asking anyone.
+  String? _userId;
+
+  /// Opens the connection for [userId]. Safe to call repeatedly — re-registering
+  /// the same id is what the server expects after a reconnect.
+  ///
+  /// The id is passed in rather than read from AuthService: this service is
+  /// created first, and AuthService opens the socket from inside its own
+  /// `init()`, before GetX has finished registering it.
+  void connect(String userId) {
+    if (userId.isEmpty) return;
+    _userId = userId;
 
     if (_socket != null) {
       // Already built. Make sure it is up and the server knows who we are.
@@ -74,7 +81,8 @@ class SocketService extends GetxService {
       connected.value = true;
       // Identify on every connect, not just the first: a reconnect gets a new
       // socket id and the server's map is keyed by it.
-      socket.emit('register', userId);
+      final id = _userId;
+      if (id != null) socket.emit('register', id);
     });
 
     socket.onDisconnect((_) {
@@ -117,6 +125,7 @@ class SocketService extends GetxService {
   void disconnect() {
     _socket?.dispose();
     _socket = null;
+    _userId = null;
     connected.value = false;
     onlineUsers.clear();
   }
