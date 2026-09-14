@@ -197,3 +197,80 @@ class MatchRowSkeleton extends StatelessWidget {
     );
   }
 }
+
+/// The outline of a profile: cover, name, the chip row, then a few paragraphs.
+///
+/// This screen fetches the member and, on your own, re-reads the session first
+/// — so it is the slowest in the app and the one most worth holding a shape
+/// for.
+class ProfileSkeleton extends StatelessWidget {
+  const ProfileSkeleton({super.key, this.isOwn = false});
+
+  final bool isOwn;
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer(
+      child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.zero,
+        children: [
+          const ShimmerBox(height: 320, radius: 0),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 36),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const ShimmerBox(width: 210, height: 26),
+                const SizedBox(height: 10),
+                const ShimmerBox(width: 120, height: 13),
+                const SizedBox(height: 24),
+
+                // The action row — one button on your own profile, four on
+                // somebody else's.
+                if (isOwn)
+                  const ShimmerBox(width: 150, height: 38, radius: 20)
+                else
+                  Row(
+                    children: const [
+                      Expanded(child: ShimmerBox(height: 44, radius: kRadius)),
+                      SizedBox(width: 12),
+                      Expanded(child: ShimmerBox(height: 44, radius: kRadius)),
+                    ],
+                  ),
+                const SizedBox(height: 28),
+
+                const ShimmerBox(width: 140, height: 19),
+                const SizedBox(height: 12),
+                const ShimmerBox(height: 13),
+                const SizedBox(height: 8),
+                const ShimmerBox(height: 13),
+                const SizedBox(height: 8),
+                const ShimmerBox(width: 220, height: 13),
+                const SizedBox(height: 28),
+
+                const ShimmerBox(width: 120, height: 19),
+                const SizedBox(height: 12),
+                Row(
+                  children: const [
+                    ShimmerBox(width: 96, height: 58, radius: kRadius),
+                    SizedBox(width: 10),
+                    ShimmerBox(width: 96, height: 58, radius: kRadius),
+                  ],
+                ),
+                const SizedBox(height: 28),
+
+                const ShimmerBox(width: 160, height: 19),
+                const SizedBox(height: 12),
+                for (var i = 0; i < 4; i++) ...[
+                  const ShimmerBox(height: 56, radius: kRadius),
+                  const SizedBox(height: 10),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

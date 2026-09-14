@@ -5,6 +5,7 @@ import '../../core/localization/translation_keys.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_drawer.dart';
 import '../../core/widgets/member_avatar.dart';
+import '../../core/widgets/shimmer.dart';
 import '../../data/models/profile_details.dart';
 import '../../routes/app_routes.dart';
 import 'profile_controller.dart';
@@ -20,7 +21,7 @@ class ProfileView extends GetView<ProfileController> {
       drawer: controller.isOwn ? const AppDrawer(current: AppRoutes.profile) : null,
       body: Obx(() {
         if (controller.loading.value) {
-          return const Center(child: CircularProgressIndicator());
+          return ProfileSkeleton(isOwn: controller.isOwn);
         }
 
         final member = controller.profile.value;
@@ -68,6 +69,15 @@ class _Cover extends GetView<ProfileController> {
       expandedHeight: 320,
       pinned: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
+      actions: controller.isOwn
+          ? [
+              IconButton(
+                icon: const Icon(Icons.edit_outlined),
+                tooltip: TrKeys.profileEdit.tr,
+                onPressed: () => Get.toNamed(AppRoutes.editProfile),
+              ),
+            ]
+          : null,
       leading: controller.isOwn
           ? Builder(
               builder: (context) => IconButton(
@@ -292,14 +302,16 @@ class _Actions extends StatelessWidget {
     );
 
     if (member.isOwn) {
-      // One action, not two: settings is its own screen in the drawer, and
-      // having both buttons land on the same place read as a mistake.
-      return SizedBox(
-        width: double.infinity,
-        child: FilledButton.icon(
+      // Editing lives in the app bar. A full-width filled button here shouted
+      // over the photograph and the name, which are what the screen is for.
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: OutlinedButton.icon(
           onPressed: onEdit,
-          style: tight,
-          icon: const Icon(Icons.edit_outlined, size: 18),
+          style: tight.copyWith(
+            minimumSize: WidgetStateProperty.all(const Size(0, 38)),
+          ),
+          icon: const Icon(Icons.edit_outlined, size: 16),
           label: Text(TrKeys.profileEdit.tr,
               overflow: TextOverflow.ellipsis, maxLines: 1),
         ),

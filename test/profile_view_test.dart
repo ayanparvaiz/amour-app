@@ -178,7 +178,14 @@ void main() {
       expect(find.text('ABONNEMENT'), findsOneWidget);
       expect(find.text('Premium (1 Mois)'), findsOneWidget);
       expect(find.text('Mes préférences'), findsOneWidget);
+      // The edit action sits to the left at its own width, not as a slab
+      // across the screen — the photograph and the name are the subject here.
       expect(find.text('Modifier'), findsOneWidget);
+      final button = tester.getSize(find.byType(OutlinedButton));
+      final screen = tester.view.physicalSize.width;
+      expect(button.width, lessThan(screen * 0.6),
+          reason: 'the edit button is taking over the screen again');
+
       // Settings is a drawer destination of its own; the profile does not
       // repeat it as a second button that goes to the same place.
       expect(find.text('Paramètres'), findsNothing);
