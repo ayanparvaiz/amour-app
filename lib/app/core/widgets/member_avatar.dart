@@ -111,8 +111,11 @@ class _MemberAvatarState extends State<MemberAvatar> {
         gradient: _bytes == null ? AppColors.heroGradient : null,
         border: border == null ? null : Border.all(color: border, width: 2),
       ),
-      clipBehavior: Clip.antiAlias,
-      child: content,
+      // Clipped explicitly rather than through the container's own
+      // `clipBehavior`. That form leaves the shape up to the decoration, and
+      // the photo came out square-cornered on device; ClipOval says what is
+      // meant and holds whatever is painting.
+      child: ClipOval(child: content),
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../core/localization/translation_keys.dart';
 import '../../data/models/profile_details.dart';
+import '../../data/models/user_model.dart';
 import '../../data/providers/api_client.dart';
 import '../../data/repositories/user_repository.dart';
 import '../../data/services/auth_service.dart';
@@ -32,6 +33,9 @@ class ProfileController extends GetxController {
   final activePhoto = 0.obs;
   final acting = false.obs;
 
+  /// Keeps this screen on the session while it is open — see [onInit].
+  Worker? _sessionWatch;
+
   /// No id means this is your own profile. An id that happens to be yours —
   /// tapping yourself in a list — counts as the same thing.
   bool get isOwn {
@@ -48,7 +52,23 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     resolveMemberId();
+
+    // The edit screen writes the saved profile straight into the session and
+    // pops. Following the session means the change is already on screen when
+    // the member lands back here, rather than after a pull to refresh.
+    if (isOwn && Get.isRegistered<AuthService>()) {
+      _sessionWatch = ever<UserModel?>(AuthService.to.userRx, (user) {
+        if (user != null) profile.value = ProfileDetails.own(user);
+      });
+    }
+
     load();
+  }
+
+  @override
+  void onClose() {
+    _sessionWatch?.dispose();
+    super.onClose();
   }
 
   /// Reads whose profile was asked for. Separate from [onInit] so it can be
