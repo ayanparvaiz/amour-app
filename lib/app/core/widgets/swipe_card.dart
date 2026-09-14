@@ -9,6 +9,11 @@ import 'member_avatar.dart';
 /// Which way a card left the deck.
 enum SwipeDirection { like, pass }
 
+/// The size a compact card is dealt at in the home row. Shared with the
+/// loading skeleton so the row cannot jump when the profiles arrive.
+const double kHomeCardWidth = 180;
+const double kHomeCardHeight = 240;
+
 /// One profile, filling the deck: the photograph, with the name and a line or
 /// two of detail over a scrim at the bottom.
 class SwipeCard extends StatelessWidget {
@@ -17,6 +22,7 @@ class SwipeCard extends StatelessWidget {
     required this.match,
     this.onTap,
     this.dimmed = false,
+    this.compact = false,
   });
 
   final MatchModel match;
@@ -26,14 +32,20 @@ class SwipeCard extends StatelessWidget {
   /// the one in play.
   final bool dimmed;
 
+  /// The same card at the size the home row uses. Type shrinks and the bio
+  /// goes — two lines of description are unreadable at a third of the width,
+  /// and the row is a taste, not the profile.
+  final bool compact;
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final pad = compact ? 12.0 : 18.0;
 
     return Material(
-      elevation: dimmed ? 0 : 6,
+      elevation: dimmed ? 0 : (compact ? 2 : 6),
       shadowColor: Colors.black.withValues(alpha: 0.28),
-      borderRadius: BorderRadius.circular(kRadius + 8),
+      borderRadius: BorderRadius.circular(compact ? kRadius : kRadius + 8),
       clipBehavior: Clip.antiAlias,
       child: GestureDetector(
         onTap: onTap,
@@ -56,15 +68,15 @@ class SwipeCard extends StatelessWidget {
 
             if (match.matchPercent != null)
               Positioned(
-                top: 14,
-                left: 14,
-                child: _Badge(percent: match.matchPercent!),
+                top: compact ? 10 : 14,
+                left: compact ? 10 : 14,
+                child: _Badge(percent: match.matchPercent!, compact: compact),
               ),
 
             Positioned(
-              left: 18,
-              right: 18,
-              bottom: 18,
+              left: pad,
+              right: pad,
+              bottom: pad,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -73,9 +85,9 @@ class SwipeCard extends StatelessWidget {
                     match.age == null
                         ? match.name
                         : '${match.name}, ${match.age}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 26,
+                      fontSize: compact ? 16 : 26,
                       fontWeight: FontWeight.w800,
                       letterSpacing: -0.5,
                     ),
@@ -83,17 +95,18 @@ class SwipeCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (match.location != null) ...[
-                    const SizedBox(height: 5),
+                    SizedBox(height: compact ? 3 : 5),
                     Row(
                       children: [
-                        const Icon(Icons.place_outlined,
-                            size: 15, color: Colors.white70),
+                        Icon(Icons.place_outlined,
+                            size: compact ? 12 : 15, color: Colors.white70),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             match.location!,
-                            style: const TextStyle(
-                                color: Colors.white70, fontSize: 14),
+                            style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: compact ? 11.5 : 14),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -101,7 +114,7 @@ class SwipeCard extends StatelessWidget {
                       ],
                     ),
                   ],
-                  if (match.bio != null) ...[
+                  if (match.bio != null && !compact) ...[
                     const SizedBox(height: 10),
                     Text(
                       match.bio!,
@@ -125,13 +138,15 @@ class SwipeCard extends StatelessWidget {
 }
 
 class _Badge extends StatelessWidget {
-  const _Badge({required this.percent});
+  const _Badge({required this.percent, this.compact = false});
 
   final int percent;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: EdgeInsets.symmetric(
+            horizontal: compact ? 7 : 10, vertical: compact ? 3 : 5),
         decoration: BoxDecoration(
           color: Colors.black.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(20),
@@ -139,12 +154,13 @@ class _Badge extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.favorite_rounded, size: 13, color: Colors.white),
-            const SizedBox(width: 5),
+            Icon(Icons.favorite_rounded,
+                size: compact ? 10 : 13, color: Colors.white),
+            SizedBox(width: compact ? 3 : 5),
             Text('$percent%',
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: compact ? 11 : 13,
                   fontWeight: FontWeight.w700,
                 )),
           ],

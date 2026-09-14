@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
+import 'swipe_card.dart';
 
 /// A light sweeping across whatever it wraps, for content that is still
 /// loading.
@@ -175,6 +176,9 @@ class MatchGridSkeleton extends StatelessWidget {
 }
 
 /// The horizontal row on the home screen.
+///
+/// Those cards are a single full-bleed photograph with the name written over
+/// it, so the outline is one block — not the old card's photo-above-caption.
 class MatchRowSkeleton extends StatelessWidget {
   const MatchRowSkeleton({super.key, this.count = 3});
 
@@ -184,14 +188,17 @@ class MatchRowSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer(
       child: SizedBox(
-        height: 246,
+        height: kHomeCardHeight,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: count,
           separatorBuilder: (_, _) => const SizedBox(width: 12),
-          itemBuilder: (_, _) =>
-              const SizedBox(width: 168, child: MatchCardSkeleton(withActions: false)),
+          itemBuilder: (_, _) => const ShimmerBox(
+            width: kHomeCardWidth,
+            height: kHomeCardHeight,
+            radius: kRadius,
+          ),
         ),
       ),
     );

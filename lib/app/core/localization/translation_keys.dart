@@ -194,6 +194,10 @@ abstract class TrKeys {
   static const homeUpgrade = 'home_upgrade';
   static const homeFreeLimit = 'home_free_limit';
   static const homeMatchPercent = 'home_match_percent';
+  static const homeLikedYouOne = 'home_liked_you_one';
+  static const homeLikedYouMany = 'home_liked_you_many';
+  static const homeLikedYouAction = 'home_liked_you_action';
+  static const homeDiscoverBody = 'home_discover_body';
   static const homeComingSoonTitle = 'home_coming_soon_title';
   static const homeComingSoonBody = 'home_coming_soon_body';
   static const signOutConfirmTitle = 'sign_out_confirm_title';

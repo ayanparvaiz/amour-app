@@ -201,6 +201,10 @@ class AppTranslations extends Translations {
     TrKeys.homeFreeLimit:
         'Free members see five profiles. Upgrade to browse without a limit.',
     TrKeys.homeMatchPercent: '@percent% match',
+    TrKeys.homeLikedYouOne: 'One person liked you',
+    TrKeys.homeLikedYouMany: '@count people liked you',
+    TrKeys.homeLikedYouAction: 'See who',
+    TrKeys.homeDiscoverBody: 'Swipe right to like, left to pass.',
     TrKeys.homeComingSoonTitle: 'Coming next',
     TrKeys.homeComingSoonBody: 'This part of the app is still being built.',
     TrKeys.signOutConfirmTitle: 'Sign out?',
@@ -648,6 +652,11 @@ class AppTranslations extends Translations {
         'Les membres gratuits voient cinq profils. Passez à un forfait '
             'supérieur pour explorer sans limite.',
     TrKeys.homeMatchPercent: '@percent% de compatibilité',
+    TrKeys.homeLikedYouOne: 'Une personne vous a aimé',
+    TrKeys.homeLikedYouMany: '@count personnes vous ont aimé',
+    TrKeys.homeLikedYouAction: 'Voir qui',
+    TrKeys.homeDiscoverBody:
+        'Glissez à droite pour aimer, à gauche pour passer.',
     TrKeys.homeComingSoonTitle: 'Bientôt disponible',
     TrKeys.homeComingSoonBody: "Cette partie de l'application est en construction.",
     TrKeys.signOutConfirmTitle: 'Se déconnecter ?',
