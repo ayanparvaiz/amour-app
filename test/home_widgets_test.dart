@@ -55,6 +55,11 @@ Widget _wholeScreen() => Column(
             count: 12, unlocked: true, faces: _members, onTap: () {}),
         const SizedBox(height: 16),
         DiscoverHero(onTap: () {}),
+        const SizedBox(height: 16),
+        StatStrip(
+            matches: 128, likesReceived: 64, likesSent: 32, onTap: () {}),
+        const SizedBox(height: 16),
+        ProfileNudge(completion: 0.46, onTap: () {}),
         const SizedBox(height: 24),
         MatchRow(matches: _members, onTap: (_) {}),
         const SizedBox(height: 24),
@@ -141,6 +146,71 @@ void main() {
 
       expect(find.text('Une personne vous a aimé'), findsOneWidget);
       expect(find.textContaining('1 personnes'), findsNothing);
+    });
+  });
+
+  group('the stat strip', () {
+    testWidgets('shows the three counts and leads to the matches',
+        (tester) async {
+      var tapped = false;
+      await _pump(
+        tester,
+        StatStrip(
+            matches: 12,
+            likesReceived: 7,
+            likesSent: 3,
+            onTap: () => tapped = true),
+      );
+      // The numbers count up on arrival, so settle before reading them.
+      await tester.pumpAndSettle();
+
+      expect(find.text('12'), findsOneWidget);
+      expect(find.text('7'), findsOneWidget);
+      expect(find.text('3'), findsOneWidget);
+      expect(find.text('Matchs'), findsOneWidget);
+      expect(find.text('Reçus'), findsOneWidget);
+      expect(find.text('Envoyés'), findsOneWidget);
+
+      await tester.tap(find.byType(StatStrip));
+      expect(tapped, isTrue);
+    });
+
+    testWidgets('starts from zero and counts up', (tester) async {
+      await _pump(
+        tester,
+        StatStrip(matches: 40, likesReceived: 0, likesSent: 0, onTap: () {}),
+      );
+
+      // Before the animation runs, nothing has been counted yet.
+      expect(find.text('40'), findsNothing);
+      await tester.pumpAndSettle();
+      expect(find.text('40'), findsOneWidget);
+    });
+  });
+
+  group('the profile nudge', () {
+    testWidgets('says how far along the profile is', (tester) async {
+      var tapped = false;
+      await _pump(
+        tester,
+        ProfileNudge(completion: 0.462, onTap: () => tapped = true),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Votre profil est rempli à 46%'), findsOneWidget);
+      expect(find.text('Le compléter'), findsOneWidget);
+
+      await tester.tap(find.byType(ProfileNudge));
+      expect(tapped, isTrue);
+    });
+
+    testWidgets('fills the bar to match', (tester) async {
+      await _pump(tester, ProfileNudge(completion: 0.5, onTap: () {}));
+      await tester.pumpAndSettle();
+
+      final bar = tester.widget<LinearProgressIndicator>(
+          find.byType(LinearProgressIndicator));
+      expect(bar.value, closeTo(0.5, 0.001));
     });
   });
 

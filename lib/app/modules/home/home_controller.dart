@@ -22,6 +22,12 @@ class HomeController extends GetxController {
   final likedByCount = 0.obs;
   final likedBy = <MatchModel>[].obs;
 
+  /// Mutual matches, and likes this member has sent. Both arrive in the same
+  /// reply as [likedByCount], so the strip on the home screen costs nothing
+  /// beyond the call already being made.
+  final matchCount = 0.obs;
+  final likesSentCount = 0.obs;
+
   /// How many of the strict matches the home row shows. The rest live in
   /// Discover; this is a taste, not the full list.
   static const int previewCount = 6;
@@ -68,9 +74,13 @@ class HomeController extends GetxController {
       final result = await _repo.affinities();
       likedByCount.value = result.likedByCount;
       likedBy.assignAll(result.likedBy.take(facePileCount));
+      matchCount.value = result.matches.length;
+      likesSentCount.value = result.likesSent.length;
     } on ApiException {
       likedByCount.value = 0;
       likedBy.clear();
+      matchCount.value = 0;
+      likesSentCount.value = 0;
     }
   }
 

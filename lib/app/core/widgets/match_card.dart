@@ -268,9 +268,14 @@ class _PercentBadge extends StatelessWidget {
 
 /// Shown in place of the row when the server returns nobody.
 class NoMatchesYet extends StatelessWidget {
-  const NoMatchesYet({super.key, this.onRetry});
+  const NoMatchesYet({super.key, this.onRetry, this.onBrowse});
 
   final VoidCallback? onRetry;
+
+  /// Where to go instead. An empty strict-match row usually means the
+  /// two-way filters were too narrow, not that anything failed — so offering
+  /// only "try again" sends people round the same loop.
+  final VoidCallback? onBrowse;
 
   @override
   Widget build(BuildContext context) {
@@ -294,9 +299,21 @@ class NoMatchesYet extends StatelessWidget {
           const SizedBox(height: 6),
           Text(TrKeys.homeNoMatchesHint.tr,
               style: text.bodySmall, textAlign: TextAlign.center),
-          if (onRetry != null) ...[
+          if (onBrowse != null) ...[
             const SizedBox(height: 16),
-            OutlinedButton(onPressed: onRetry, child: Text(TrKeys.homeRetry.tr)),
+            FilledButton(
+              onPressed: onBrowse,
+              child: Text(TrKeys.homeNoMatchesAction.tr,
+                  overflow: TextOverflow.ellipsis),
+            ),
+          ],
+          if (onRetry != null) ...[
+            SizedBox(height: onBrowse == null ? 16 : 6),
+            TextButton(
+              onPressed: onRetry,
+              child:
+                  Text(TrKeys.homeRetry.tr, overflow: TextOverflow.ellipsis),
+            ),
           ],
         ],
       ),

@@ -237,10 +237,34 @@ class _FacePile extends StatelessWidget {
 
 /// The way into the deck. Swiping is what the app is for, and the only route
 /// to it used to be a small magnifier in the corner of the bar.
-class DiscoverHero extends StatelessWidget {
+class DiscoverHero extends StatefulWidget {
   const DiscoverHero({super.key, required this.onTap});
 
   final VoidCallback onTap;
+
+  @override
+  State<DiscoverHero> createState() => _DiscoverHeroState();
+}
+
+class _DiscoverHeroState extends State<DiscoverHero>
+    with SingleTickerProviderStateMixin {
+  /// Built here, not as a late field — see the note in [Entrance].
+  late final AnimationController _sheen;
+
+  @override
+  void initState() {
+    super.initState();
+    _sheen = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2600),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _sheen.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -250,10 +274,11 @@ class DiscoverHero extends StatelessWidget {
       elevation: 3,
       shadowColor: AppColors.primary.withValues(alpha: 0.35),
       child: InkWell(
-        onTap: onTap,
+        onTap: widget.onTap,
         child: Container(
           padding: const EdgeInsets.fromLTRB(18, 17, 14, 17),
           decoration: const BoxDecoration(gradient: AppColors.heroGradient),
+          foregroundDecoration: _Sheen(_sheen),
           child: Row(
             children: [
               Container(
@@ -298,6 +323,247 @@ class DiscoverHero extends StatelessWidget {
               const SizedBox(width: 6),
               const Icon(Icons.arrow_forward_rounded,
                   size: 20, color: Colors.white),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A band of light crossing the hero every few seconds.
+///
+/// Painted as a foreground decoration rather than a stacked widget so it lies
+/// over the text without intercepting a tap, and repaints on its own without
+/// rebuilding anything underneath it.
+class _Sheen extends Decoration {
+  const _Sheen(this.progress);
+
+  final Animation<double> progress;
+
+  @override
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) =>
+      _SheenPainter(progress, onChanged);
+}
+
+class _SheenPainter extends BoxPainter {
+  _SheenPainter(this.progress, VoidCallback? onChanged)
+      : super(onChanged) {
+    progress.addListener(onChanged ?? () {});
+  }
+
+  final Animation<double> progress;
+
+  @override
+  void paint(Canvas canvas, Offset offset, ImageConfiguration config) {
+    final size = config.size;
+    if (size == null) return;
+    final rect = offset & size;
+
+    // Travels from off one edge to off the other, so it enters and leaves
+    // rather than appearing in place, and rests between passes.
+    final travel = progress.value * 2.4 - 0.7;
+    final shader = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Colors.white.withValues(alpha: 0),
+        Colors.white.withValues(alpha: 0.16),
+        Colors.white.withValues(alpha: 0),
+      ],
+      stops: [
+        (travel - 0.16).clamp(0.0, 1.0),
+        travel.clamp(0.0, 1.0),
+        (travel + 0.16).clamp(0.0, 1.0),
+      ],
+    ).createShader(rect);
+
+    canvas.drawRect(rect, Paint()..shader = shader);
+  }
+}
+
+/// Matches, likes received and likes sent — three numbers the screen already
+/// has, because they arrive in the same reply as the likes count.
+class StatStrip extends StatelessWidget {
+  const StatStrip({
+    super.key,
+    required this.matches,
+    required this.likesReceived,
+    required this.likesSent,
+    required this.onTap,
+  });
+
+  final int matches;
+  final int likesReceived;
+  final int likesSent;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return Material(
+      color: scheme.surface,
+      borderRadius: BorderRadius.circular(kRadius),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(kRadius),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(kRadius),
+            border: Border.all(color: scheme.outline),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                  child: _Stat(value: matches, label: TrKeys.matchesTabMutual.tr)),
+              _Divider(),
+              Expanded(
+                  child: _Stat(
+                      value: likesReceived, label: TrKeys.matchesTabReceived.tr)),
+              _Divider(),
+              Expanded(
+                  child: _Stat(value: likesSent, label: TrKeys.matchesTabSent.tr)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Container(
+        width: 1,
+        height: 28,
+        color: Theme.of(context).colorScheme.outline,
+      );
+}
+
+class _Stat extends StatelessWidget {
+  const _Stat({required this.value, required this.label});
+
+  final int value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Counts up on arrival, so the strip reads as something that was
+        // gathered rather than something that was always sitting there.
+        TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0, end: value.toDouble()),
+          duration: const Duration(milliseconds: 650),
+          curve: Curves.easeOutCubic,
+          builder: (_, shown, _) => Text(
+            '${shown.round()}',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.5,
+              color: scheme.primary,
+            ),
+          ),
+        ),
+        const SizedBox(height: 2),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 11.5, color: scheme.onSurfaceVariant),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Shown while the profile is thin. The server scores a match only on answers
+/// both members have given, so an unfinished profile really is offered less
+/// often — which is what this says, rather than nagging for its own sake.
+class ProfileNudge extends StatelessWidget {
+  const ProfileNudge({
+    super.key,
+    required this.completion,
+    required this.onTap,
+  });
+
+  /// 0 to 1.
+  final double completion;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
+    final percent = (completion * 100).round();
+
+    return Material(
+      color: scheme.surface,
+      borderRadius: BorderRadius.circular(kRadius),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(kRadius),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(16, 14, 16, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(kRadius),
+            border: Border.all(color: scheme.outline),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.auto_awesome_rounded, size: 18, color: scheme.primary),
+                  const SizedBox(width: 9),
+                  Expanded(
+                    child: Text(
+                      TrKeys.homeCompleteTitle.trParams({'percent': '$percent'}),
+                      style: const TextStyle(
+                          fontSize: 14.5, fontWeight: FontWeight.w700),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    TrKeys.homeCompleteAction.tr,
+                    style: TextStyle(
+                        fontSize: 12.5,
+                        color: scheme.primary,
+                        fontWeight: FontWeight.w700),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 11),
+              // Fills from empty on arrival — the bar moving is the point.
+              TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0, end: completion.clamp(0.0, 1.0)),
+                duration: const Duration(milliseconds: 800),
+                curve: Curves.easeOutCubic,
+                builder: (_, shown, _) => ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: shown,
+                    minHeight: 6,
+                    backgroundColor: scheme.surfaceContainerHighest,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 9),
+              Text(TrKeys.homeCompleteBody.tr, style: text.bodySmall),
             ],
           ),
         ),

@@ -205,6 +205,11 @@ class AppTranslations extends Translations {
     TrKeys.homeLikedYouMany: '@count people liked you',
     TrKeys.homeLikedYouAction: 'See who',
     TrKeys.homeDiscoverBody: 'Swipe right to like, left to pass.',
+    TrKeys.homeCompleteTitle: 'Your profile is @percent% complete',
+    TrKeys.homeCompleteBody:
+        'Members who answer more are matched more often.',
+    TrKeys.homeCompleteAction: 'Finish it',
+    TrKeys.homeNoMatchesAction: 'Browse everyone',
     TrKeys.homeComingSoonTitle: 'Coming next',
     TrKeys.homeComingSoonBody: 'This part of the app is still being built.',
     TrKeys.signOutConfirmTitle: 'Sign out?',
@@ -652,6 +657,11 @@ class AppTranslations extends Translations {
         'Les membres gratuits voient cinq profils. Passez à un forfait '
             'supérieur pour explorer sans limite.',
     TrKeys.homeMatchPercent: '@percent% de compatibilité',
+    TrKeys.homeCompleteTitle: 'Votre profil est rempli à @percent%',
+    TrKeys.homeCompleteBody:
+        'Les membres qui en disent plus sont proposés plus souvent.',
+    TrKeys.homeCompleteAction: 'Le compléter',
+    TrKeys.homeNoMatchesAction: 'Voir tout le monde',
     TrKeys.homeLikedYouOne: 'Une personne vous a aimé',
     TrKeys.homeLikedYouMany: '@count personnes vous ont aimé',
     TrKeys.homeLikedYouAction: 'Voir qui',

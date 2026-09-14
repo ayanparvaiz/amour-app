@@ -101,6 +101,26 @@ class UserModel {
   /// list as well, so this is purely for messaging in the UI.
   static const int freeBrowseLimit = 5;
 
+  /// How much of the profile is filled in, from 0 to 1.
+  ///
+  /// These are the fields the server actually scores a match on — it adds
+  /// points only when both members have answered (`u.smoke === currentUser
+  /// .smoke && u.smoke`), so a blank answer is worth nothing to either side.
+  /// A thin profile really is shown less often, which is what the nudge on the
+  /// home screen says.
+  double get profileCompletion {
+    final answers = <String?>[
+      photo, bio, location, hobbies, favoriteActivities, zodiacSign, religion,
+      children, height, eyeColor, hairColor, smoke, alcohol,
+    ];
+    final filled = answers.where((a) => (a ?? '').trim().isNotEmpty).length;
+    return filled / answers.length;
+  }
+
+  /// Whether the profile is thin enough to be worth mentioning. Above this
+  /// there is little left to gain and the nudge is just nagging.
+  bool get profileNeedsWork => profileCompletion < 0.8;
+
   int get weeklySuperLikes => switch (tier) {
         PlanTier.prestige => 6,
         PlanTier.premium => 3,

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../core/localization/translation_keys.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_drawer.dart';
+import '../../core/widgets/entrance.dart';
 import '../../core/widgets/match_card.dart';
 import '../../core/widgets/shimmer.dart';
 import '../../data/services/auth_service.dart';
@@ -38,14 +39,24 @@ class HomeView extends GetView<HomeController> {
         onRefresh: controller.refreshAll,
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 32),
+          // Each section arrives a beat after the one above it, so the screen
+          // assembles itself down the page in the order the content matters
+          // rather than landing all at once.
           children: [
-            const _Greeting(),
+            const Entrance(child: _Greeting()),
             const SizedBox(height: 18),
-            const _Likes(),
-            DiscoverHero(onTap: () => Get.toNamed(AppRoutes.discover)),
-            const SizedBox(height: 24),
-            const _MatchesSection(),
-            const _Upgrade(),
+            Entrance(delay: Entrance.stagger(1), child: const _Likes()),
+            Entrance(
+              delay: Entrance.stagger(2),
+              child: DiscoverHero(onTap: () => Get.toNamed(AppRoutes.discover)),
+            ),
+            const SizedBox(height: 16),
+            Entrance(delay: Entrance.stagger(3), child: const _Stats()),
+            const SizedBox(height: 16),
+            Entrance(delay: Entrance.stagger(4), child: const _Nudge()),
+            const SizedBox(height: 8),
+            Entrance(delay: Entrance.stagger(5), child: const _MatchesSection()),
+            Entrance(delay: Entrance.stagger(6), child: const _Upgrade()),
           ],
         ),
       ),
@@ -99,6 +110,44 @@ class _Likes extends GetView<HomeController> {
   }
 }
 
+/// Three numbers the screen already has — they arrive in the same reply as
+/// the likes count, so this costs no extra call.
+class _Stats extends GetView<HomeController> {
+  const _Stats();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      if (controller.loading.value) return const SizedBox.shrink();
+
+      return StatStrip(
+        matches: controller.matchCount.value,
+        likesReceived: controller.likedByCount.value,
+        likesSent: controller.likesSentCount.value,
+        onTap: () => Get.toNamed(AppRoutes.matches),
+      );
+    });
+  }
+}
+
+/// Only while the profile is thin enough to be worth mentioning.
+class _Nudge extends StatelessWidget {
+  const _Nudge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final user = AuthService.to.user;
+      if (user == null || !user.profileNeedsWork) return const SizedBox.shrink();
+
+      return ProfileNudge(
+        completion: user.profileCompletion,
+        onTap: () => Get.toNamed(AppRoutes.editProfile),
+      );
+    });
+  }
+}
+
 class _MatchesSection extends GetView<HomeController> {
   const _MatchesSection();
 
@@ -135,7 +184,13 @@ class _MatchesSection extends GetView<HomeController> {
           }
 
           if (controller.matches.isEmpty) {
-            return NoMatchesYet(onRetry: controller.load);
+            // Empty here almost always means the strict two-way filters found
+            // nobody, not that the call failed — so the way out is Discover,
+            // which relaxes them, rather than asking again for the same answer.
+            return NoMatchesYet(
+              onBrowse: () => Get.toNamed(AppRoutes.discover),
+              onRetry: controller.load,
+            );
           }
 
           return MatchRow(
