@@ -17,6 +17,11 @@ class MessagesView extends GetView<MessagesController> {
     return Scaffold(
       appBar: AppBar(title: Text(TrKeys.navMessages.tr)),
       drawer: const AppDrawer(current: AppRoutes.messages),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.toNamed(AppRoutes.discover),
+        tooltip: TrKeys.matchesStartDiscovering.tr,
+        child: const Icon(Icons.chat_rounded),
+      ),
       body: Obx(() {
         if (controller.loading.value) {
           return const Center(child: CircularProgressIndicator());
@@ -38,12 +43,13 @@ class MessagesView extends GetView<MessagesController> {
             child: ListView(
               children: [
                 const SizedBox(height: 90),
+                // No button here: starting a conversation is the floating
+                // action, so it sits in the same place whether the list is
+                // empty or full.
                 _Empty(
                   icon: Icons.forum_outlined,
                   title: TrKeys.msgNoChatsTitle.tr,
                   body: TrKeys.msgNoChatsBody.tr,
-                  actionLabel: TrKeys.matchesStartDiscovering.tr,
-                  onAction: () => Get.toNamed(AppRoutes.discover),
                 ),
               ],
             ),

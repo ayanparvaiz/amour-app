@@ -66,12 +66,6 @@ class AppDrawer extends StatelessWidget {
                     route: AppRoutes.settings,
                     current: current,
                   ),
-                  _Item(
-                    icon: Icons.shield_outlined,
-                    label: TrKeys.navTerms.tr,
-                    route: AppRoutes.terms,
-                    current: current,
-                  ),
                   if (user?.isAdmin ?? false)
                     _Item(
                       icon: Icons.dashboard_outlined,
