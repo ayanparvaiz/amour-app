@@ -6,6 +6,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_drawer.dart';
 import '../../core/widgets/match_card.dart';
+import '../../core/widgets/shimmer.dart';
 import '../../data/services/auth_service.dart';
 import '../../routes/app_routes.dart';
 import 'home_controller.dart';
@@ -162,12 +163,7 @@ class _MatchesSection extends GetView<HomeController> {
         ),
         const SizedBox(height: 12),
         Obx(() {
-          if (controller.loading.value) {
-            return const SizedBox(
-              height: 240,
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
+          if (controller.loading.value) return const MatchRowSkeleton();
 
           final message = controller.error.value;
           if (message != null) {

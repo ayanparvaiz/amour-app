@@ -22,6 +22,29 @@ const _longProfile = MatchModel(
 
 Widget _wrap(Widget child) => MaterialApp(home: Scaffold(body: child));
 
+/// One card with all three actions, at a realistic card width.
+Future<void> _pump(WidgetTester tester, Size size) async {
+  tester.view.physicalSize = size;
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(tester.view.reset);
+
+  await tester.pumpWidget(_wrap(
+    Center(
+      child: SizedBox(
+        width: 200,
+        height: 320,
+        child: MatchCard(
+          match: _profile,
+          onLike: () {},
+          onPass: () {},
+          onMessage: () {},
+        ),
+      ),
+    ),
+  ));
+  await tester.pump();
+}
+
 /// The grid exactly as Discover builds it, so the test fails for the same
 /// reason the screen would.
 Widget _discoverGrid(List<MatchModel> profiles) => _wrap(
@@ -127,6 +150,24 @@ void main() {
       expect(find.byIcon(Icons.close_rounded), findsOneWidget);
       expect(find.byIcon(Icons.chat_bubble_outline_rounded), findsOneWidget);
       expect(find.byIcon(Icons.favorite_rounded), findsNWidgets(2));
+    });
+
+    testWidgets('keeps the actions apart', (tester) async {
+      // Regression: the row sat inside a FittedBox, which hands it unbounded
+      // width — so it shrink-wrapped, spaceEvenly had nothing to spread, and
+      // the three buttons ended up touching. The gaps are explicit now.
+      await _pump(tester, const Size(390, 900));
+
+      final row = find.ancestor(
+        of: find.byIcon(Icons.close_rounded),
+        matching: find.byType(Row),
+      );
+      final pass = tester.getRect(find.byIcon(Icons.close_rounded));
+      final like = tester.getRect(find.byIcon(Icons.favorite_rounded).last);
+
+      expect(row, findsWidgets);
+      expect(like.left - pass.right, greaterThan(8),
+          reason: 'pass and like are touching');
     });
 
     testWidgets('falls back to the initial when there is no photo',

@@ -5,6 +5,7 @@ import '../../core/localization/translation_keys.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_drawer.dart';
 import '../../core/widgets/match_card.dart';
+import '../../core/widgets/shimmer.dart';
 import '../../data/services/auth_service.dart';
 import '../../routes/app_routes.dart';
 import 'discover_controller.dart';
@@ -31,7 +32,8 @@ class DiscoverView extends GetView<DiscoverController> {
       drawer: const AppDrawer(current: AppRoutes.discover),
       body: Obx(() {
         if (controller.loading.value) {
-          return const Center(child: CircularProgressIndicator());
+          // The grid's own shape, so nothing jumps when the profiles land.
+          return const MatchGridSkeleton();
         }
 
         final message = controller.error.value;

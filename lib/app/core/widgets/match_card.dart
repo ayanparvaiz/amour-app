@@ -145,15 +145,19 @@ class _Actions extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
 
-    // Two columns on a 320px screen leave about 110px inside the card, which
-    // is narrower than three buttons. Scaling down beats overflowing, and on
-    // any normal width nothing is scaled at all.
+    // Inside a FittedBox the row is given unbounded width, so it shrink-wraps
+    // and spaceEvenly has nothing to spread — which is why these sat shoulder
+    // to shoulder. The gaps are explicit instead.
+    //
+    // The FittedBox stays: two columns on a 320px screen leave about 110px
+    // inside a card, and scaling down beats overflowing. At any normal width
+    // nothing is scaled.
     return FittedBox(
       fit: BoxFit.scaleDown,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          if (onPass != null)
+          if (onPass != null) ...[
             _RoundAction(
               icon: Icons.close_rounded,
               tooltip: TrKeys.discoverPass.tr,
@@ -161,6 +165,8 @@ class _Actions extends StatelessWidget {
               foreground: scheme.onSurfaceVariant,
               border: scheme.outline,
             ),
+            const SizedBox(width: 14),
+          ],
           if (onLike != null)
             _RoundAction(
               icon: Icons.favorite_rounded,
@@ -168,9 +174,10 @@ class _Actions extends StatelessWidget {
               onTap: onLike!,
               foreground: Colors.white,
               background: scheme.primary,
-              size: 44,
+              size: 40,
             ),
-          if (onMessage != null)
+          if (onMessage != null) ...[
+            const SizedBox(width: 14),
             _RoundAction(
               icon: Icons.chat_bubble_outline_rounded,
               tooltip: TrKeys.discoverMessage.tr,
@@ -178,6 +185,7 @@ class _Actions extends StatelessWidget {
               foreground: scheme.primary,
               border: scheme.outline,
             ),
+          ],
         ],
       ),
     );
@@ -192,7 +200,7 @@ class _RoundAction extends StatelessWidget {
     required this.foreground,
     this.background,
     this.border,
-    this.size = 36,
+    this.size = 32,
   });
 
   final IconData icon;

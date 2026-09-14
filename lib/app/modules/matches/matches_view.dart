@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../core/localization/translation_keys.dart';
 import '../../core/widgets/app_drawer.dart';
 import '../../core/widgets/match_card.dart';
+import '../../core/widgets/shimmer.dart';
 import '../../data/models/match_model.dart';
 import '../../routes/app_routes.dart';
 import 'matches_controller.dart';
@@ -37,7 +38,7 @@ class MatchesView extends GetView<MatchesController> {
         drawer: const AppDrawer(current: AppRoutes.matches),
         body: Obx(() {
           if (controller.loading.value) {
-            return const Center(child: CircularProgressIndicator());
+            return const MatchGridSkeleton();
           }
 
           final message = controller.error.value;
