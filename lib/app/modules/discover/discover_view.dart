@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import '../../core/localization/translation_keys.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/app_drawer.dart';
-import '../../core/widgets/match_card.dart';
 import '../../core/widgets/shimmer.dart';
+import '../../core/widgets/swipe_actions.dart';
+import '../../core/widgets/swipe_deck.dart';
 import '../../data/services/auth_service.dart';
 import '../../routes/app_routes.dart';
 import 'discover_controller.dart';
@@ -16,8 +17,6 @@ class DiscoverView extends GetView<DiscoverController> {
 
   @override
   Widget build(BuildContext context) {
-    final text = Theme.of(context).textTheme;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(TrKeys.navDiscover.tr),
@@ -31,14 +30,11 @@ class DiscoverView extends GetView<DiscoverController> {
       ),
       drawer: const AppDrawer(current: AppRoutes.discover),
       body: Obx(() {
-        if (controller.loading.value) {
-          // The grid's own shape, so nothing jumps when the profiles land.
-          return const MatchGridSkeleton();
-        }
+        if (controller.loading.value) return const _DeckSkeleton();
 
         final message = controller.error.value;
         if (message != null) {
-          return _CenteredMessage(
+          return _Centered(
             icon: Icons.cloud_off_rounded,
             title: message,
             actionLabel: TrKeys.homeRetry.tr,
@@ -47,75 +43,66 @@ class DiscoverView extends GetView<DiscoverController> {
         }
 
         if (controller.profiles.isEmpty) {
-          return RefreshIndicator(
-            onRefresh: controller.load,
-            child: ListView(
-              children: [
-                const SizedBox(height: 80),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: NoMatchesYet(onRetry: controller.load),
-                ),
-              ],
-            ),
+          return _Centered(
+            icon: Icons.search_off_rounded,
+            title: TrKeys.swipeDeckEmpty.tr,
+            body: TrKeys.swipeDeckEmptyBody.tr,
+            actionLabel: TrKeys.homeRetry.tr,
+            onAction: controller.load,
           );
         }
 
-        return RefreshIndicator(
-          onRefresh: controller.load,
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 14, 20, 4),
-                  child: Text(
-                    TrKeys.discoverFound
-                        .trParams({'count': '${controller.profiles.length}'}),
-                    style: text.bodySmall,
-                  ),
-                ),
-              ),
-              const SliverToBoxAdapter(child: _FreeLimitNotice()),
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 28),
-                sliver: SliverGrid(
-                  gridDelegate:
-                      const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 230,
-                    mainAxisSpacing: 14,
-                    crossAxisSpacing: 14,
-                    // Tall enough for the name, location and action row with
-                    // the photo filling the rest; the card no longer depends
-                    // on this being exact.
-                    childAspectRatio: 0.62,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (_, i) {
-                      final profile = controller.profiles[i];
-                      return MatchCard(
-                        match: profile,
-                        onTap: () => Get.toNamed(AppRoutes.profile,
-                            arguments: profile.id),
-                        onLike: () => controller.like(profile),
-                        onPass: () => controller.pass(profile),
-                        onMessage: () => Get.toNamed(AppRoutes.chat,
-                            arguments: profile.id),
-                      );
-                    },
-                    childCount: controller.profiles.length,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
+        return const _Deck();
       }),
     );
   }
 }
 
-/// Free accounts are cut to five results by the server, so the list ending is
-/// a paywall rather than the end of the members.
+class _Deck extends GetView<DiscoverController> {
+  const _Deck();
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          const _FreeLimitNotice(),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+              child: Obx(() => SwipeDeck(
+                    profiles: controller.profiles.toList(),
+                    controller: controller.deck,
+                    onSwipe: controller.onSwiped,
+                    onTapProfile: (profile) =>
+                        Get.toNamed(AppRoutes.profile, arguments: profile.id),
+                  )),
+            ),
+          ),
+          const _ActionBar(),
+        ],
+      ),
+    );
+  }
+}
+
+/// The action row, wired to the deck. The buttons throw the same card the same
+/// way a drag does, so the two ways of deciding behave identically rather than
+/// one being a shortcut.
+class _ActionBar extends GetView<DiscoverController> {
+  const _ActionBar();
+
+  @override
+  Widget build(BuildContext context) => Obx(() => SwipeActions(
+        canSuperLike: AuthService.to.user?.canSuperLike ?? false,
+        onPass: controller.passTop,
+        onSuperLike: controller.superLikeTop,
+        onLike: controller.likeTop,
+      ));
+}
+
+/// Free accounts are cut to five profiles by the server, so the deck running
+/// out is a paywall rather than the end of the members.
 class _FreeLimitNotice extends StatelessWidget {
   const _FreeLimitNotice();
 
@@ -129,9 +116,9 @@ class _FreeLimitNotice extends StatelessWidget {
       final scheme = Theme.of(context).colorScheme;
 
       return Padding(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+        padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
         child: Container(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(kRadius),
             color: scheme.primary.withValues(alpha: 0.07),
@@ -139,15 +126,15 @@ class _FreeLimitNotice extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(Icons.lock_outline_rounded, size: 18, color: scheme.primary),
+              Icon(Icons.lock_outline_rounded, size: 17, color: scheme.primary),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(TrKeys.homeFreeLimit.tr, style: text.bodySmall),
               ),
-              const SizedBox(width: 8),
               TextButton(
                 onPressed: () => Get.toNamed(AppRoutes.plans),
-                child: Text(TrKeys.homeUpgrade.tr),
+                child: Text(TrKeys.homeUpgrade.tr,
+                    overflow: TextOverflow.ellipsis),
               ),
             ],
           ),
@@ -157,16 +144,63 @@ class _FreeLimitNotice extends StatelessWidget {
   }
 }
 
-class _CenteredMessage extends StatelessWidget {
-  const _CenteredMessage({
+/// The deck's own shape while it loads: one card, and the buttons beneath.
+class _DeckSkeleton extends StatelessWidget {
+  const _DeckSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Shimmer(
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                child: ShimmerBox(radius: kRadius + 8),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(20, 6, 20, 18),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ShimmerBox(
+                      width: kSwipeActionLarge,
+                      height: kSwipeActionLarge,
+                      shape: BoxShape.circle),
+                  SizedBox(width: kSwipeActionGap),
+                  ShimmerBox(
+                      width: kSwipeActionSmall,
+                      height: kSwipeActionSmall,
+                      shape: BoxShape.circle),
+                  SizedBox(width: kSwipeActionGap),
+                  ShimmerBox(
+                      width: kSwipeActionLarge,
+                      height: kSwipeActionLarge,
+                      shape: BoxShape.circle),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Centered extends StatelessWidget {
+  const _Centered({
     required this.icon,
     required this.title,
+    this.body,
     this.actionLabel,
     this.onAction,
   });
 
   final IconData icon;
   final String title;
+  final String? body;
   final String? actionLabel;
   final VoidCallback? onAction;
 
@@ -181,12 +215,27 @@ class _CenteredMessage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 34, color: scheme.onSurfaceVariant),
-            const SizedBox(height: 14),
-            Text(title, style: text.bodyMedium, textAlign: TextAlign.center),
+            Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: scheme.surfaceContainerHighest,
+              ),
+              child: Icon(icon, size: 30, color: scheme.onSurfaceVariant),
+            ),
+            const SizedBox(height: 18),
+            Text(title, style: text.headlineMedium, textAlign: TextAlign.center),
+            if (body != null) ...[
+              const SizedBox(height: 8),
+              Text(body!, style: text.bodySmall, textAlign: TextAlign.center),
+            ],
             if (actionLabel != null) ...[
-              const SizedBox(height: 18),
-              OutlinedButton(onPressed: onAction, child: Text(actionLabel!)),
+              const SizedBox(height: 22),
+              OutlinedButton(
+                onPressed: onAction,
+                child: Text(actionLabel!, overflow: TextOverflow.ellipsis),
+              ),
             ],
           ],
         ),

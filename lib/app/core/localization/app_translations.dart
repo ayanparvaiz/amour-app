@@ -444,6 +444,16 @@ class AppTranslations extends Translations {
     TrKeys.featFreeBrowsingLimit: 'Five profiles',
     TrKeys.featPriority: 'Priority in search results',
 
+    // Swipe deck
+    TrKeys.swipeLike: 'LIKE',
+    TrKeys.swipeNope: 'NOPE',
+    TrKeys.swipeSuper: 'Super Like',
+    TrKeys.swipeSuperLocked: 'Super Likes are for Premium and Prestige members.',
+    TrKeys.swipeDeckEmpty: 'That is everyone for now',
+    TrKeys.swipeDeckEmptyBody:
+        'Widen your criteria, or come back a little later for new profiles.',
+    TrKeys.swipeUndoNone: 'Nothing to undo',
+
     // Placeholders
     TrKeys.comingSoon: 'This screen will be built soon.',
     TrKeys.registerPlaceholderNote:
@@ -890,6 +900,18 @@ class AppTranslations extends Translations {
     TrKeys.featUnlimitedBrowsing: 'Explorer sans limite',
     TrKeys.featFreeBrowsingLimit: 'Cinq profils',
     TrKeys.featPriority: 'Priorité dans les résultats',
+
+    // Swipe deck
+    TrKeys.swipeLike: "J'AIME",
+    TrKeys.swipeNope: 'NON',
+    TrKeys.swipeSuper: 'Super Like',
+    TrKeys.swipeSuperLocked:
+        'Les Super Likes sont réservés aux membres Premium et Prestige.',
+    TrKeys.swipeDeckEmpty: "C'est tout pour le moment",
+    TrKeys.swipeDeckEmptyBody:
+        'Élargissez vos critères, ou revenez un peu plus tard pour de nouveaux '
+            'profils.',
+    TrKeys.swipeUndoNone: 'Rien à annuler',
 
     // Placeholders
     TrKeys.comingSoon: 'Cet écran sera construit prochainement.',

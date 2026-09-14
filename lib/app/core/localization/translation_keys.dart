@@ -430,6 +430,15 @@ abstract class TrKeys {
   static const featFreeBrowsingLimit = 'feat_free_browsing_limit';
   static const featPriority = 'feat_priority';
 
+  // --- Swipe deck ---------------------------------------------------------
+  static const swipeLike = 'swipe_like';
+  static const swipeNope = 'swipe_nope';
+  static const swipeSuper = 'swipe_super';
+  static const swipeSuperLocked = 'swipe_super_locked';
+  static const swipeDeckEmpty = 'swipe_deck_empty';
+  static const swipeDeckEmptyBody = 'swipe_deck_empty_body';
+  static const swipeUndoNone = 'swipe_undo_none';
+
   // --- Placeholders ------------------------------------------------------
   static const comingSoon = 'coming_soon';
   static const registerPlaceholderNote = 'register_placeholder_note';

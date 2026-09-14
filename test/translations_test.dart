@@ -80,6 +80,7 @@ void main() {
       TrKeys.firstNameHint,
       TrKeys.ageHint,
       TrKeys.entSuperLikes,
+      TrKeys.swipeSuper,
       TrKeys.zCancer,
       TrKeys.navMessages,
       TrKeys.navMenu,

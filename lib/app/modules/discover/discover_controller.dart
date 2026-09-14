@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 
 import '../../core/constants/filter_options.dart';
 import '../../core/localization/translation_keys.dart';
+import '../../core/widgets/swipe_card.dart';
+import '../../core/widgets/swipe_deck.dart';
 import '../../data/models/match_model.dart';
 import '../../data/providers/api_client.dart';
 import '../../data/repositories/user_repository.dart';
@@ -15,6 +17,10 @@ class DiscoverController extends GetxController {
   final UserRepository _repo;
 
   final profiles = <MatchModel>[].obs;
+
+  /// Lets the buttons throw a card the same way a drag does, so deciding with
+  /// a thumb and deciding with a finger behave identically.
+  final deck = SwipeDeckController();
   final loading = true.obs;
   final error = RxnString();
 
@@ -121,46 +127,58 @@ class DiscoverController extends GetxController {
     keywordCtrl.clear();
   }
 
-  // --- Actions -----------------------------------------------------------
+  // --- The deck ----------------------------------------------------------
 
-  /// Liking and passing both remove the profile from the list, because the
-  /// server excludes it from every later response anyway — leaving it on screen
-  /// would let someone act on it twice.
-  Future<void> like(MatchModel profile) async {
-    final removed = _remove(profile);
+  void likeTop() => deck.like();
+  void passTop() => deck.pass();
+
+  /// Super likes are Premium and Prestige only. The server refuses anyone else,
+  /// so the card is not thrown — it would be dealt straight back.
+  Future<void> superLikeTop() async {
+    final profile = profiles.isEmpty ? null : profiles.first;
+    if (profile == null || deck.isBusy) return;
+
+    if (!(AuthService.to.user?.canSuperLike ?? false)) {
+      Get.snackbar(TrKeys.swipeSuper.tr, TrKeys.swipeSuperLocked.tr,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 4));
+      return;
+    }
+
+    // Throw it first: waiting on the network before the card moves makes the
+    // button feel broken.
+    deck.like();
     try {
-      final result = await _repo.like(profile.id);
+      final result = await _repo.superLike(profile.id);
       Get.snackbar(
-        result.isMatch ? TrKeys.discoverItsAMatch.tr : TrKeys.discoverLiked.tr,
+        result.isMatch ? TrKeys.discoverItsAMatch.tr : TrKeys.swipeSuper.tr,
         result.message,
         snackPosition: SnackPosition.BOTTOM,
       );
     } on ApiException catch (e) {
-      _restore(profile, removed);
       _error(e.message);
     }
   }
 
-  Future<void> pass(MatchModel profile) async {
-    final removed = _remove(profile);
+  /// Called once a card has left the screen. The profile is dropped either way:
+  /// the server excludes a liked or passed member from every later response, so
+  /// putting it back would only offer a decision that has already been recorded.
+  Future<void> onSwiped(MatchModel profile, SwipeDirection direction) async {
+    profiles.removeWhere((p) => p.id == profile.id);
+
     try {
-      await _repo.pass(profile.id);
+      if (direction == SwipeDirection.like) {
+        final result = await _repo.like(profile.id);
+        if (result.isMatch) {
+          Get.snackbar(TrKeys.discoverItsAMatch.tr, result.message,
+              snackPosition: SnackPosition.BOTTOM);
+        }
+      } else {
+        await _repo.pass(profile.id);
+      }
     } on ApiException catch (e) {
-      _restore(profile, removed);
       _error(e.message);
     }
-  }
-
-  int _remove(MatchModel profile) {
-    final index = profiles.indexWhere((p) => p.id == profile.id);
-    if (index >= 0) profiles.removeAt(index);
-    return index;
-  }
-
-  /// Put a profile back where it was when the server rejected the action.
-  void _restore(MatchModel profile, int index) {
-    if (index < 0) return;
-    profiles.insert(index.clamp(0, profiles.length), profile);
   }
 
   void _error(String message) =>
