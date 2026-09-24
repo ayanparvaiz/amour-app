@@ -1,17 +1,54 @@
-# amour_app
+# Amour Et Sincérité
 
-Amour Et Sincérité — rencontres
+A Flutter dating app — *rencontres* — with swipe matching, real-time chat and
+location-based discovery, localised in French.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+| Module | What it does |
+|---|---|
+| `discover` | Swipe deck of nearby profiles, with like / pass actions |
+| `matches` | Mutual likes, shown as match cards |
+| `messages` · `chat` | Real-time conversations over Socket.IO |
+| `profile` · `edit_profile` · `profile_setup` | Photos, details and first-run onboarding |
+| `plans` | Subscription plans |
+| `auth` · `settings` · `splash` | Sign-in, preferences, launch |
 
-A few resources to get you started if this is your first Flutter project:
+## Stack
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- **Flutter** (Dart SDK `^3.12`)
+- **GetX** for state, routing and dependency injection; `get_storage` for local persistence
+- **Socket.IO** client for live messaging
+- **Geolocator** for location-based discovery
+- **Image Picker** for profile photos
+- **http** REST client against the backend API
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Structure
+
+```
+lib/app/
+├── core/
+│   ├── constants/      API endpoints, images, filter and settings options
+│   ├── localization/   translations and keys
+│   ├── theme/          colours and app theme
+│   └── widgets/        swipe deck, swipe card, match card, avatar, shimmer
+├── data/
+│   ├── models/         user, match, message, plan, profile details
+│   ├── providers/      API client
+│   ├── repositories/   user, message, plan
+│   └── services/       auth, socket
+└── modules/            one folder per screen, listed above
+```
+
+Each module pairs a GetX controller with its view, so a screen's state lives
+beside the widget that renders it.
+
+## Running
+
+```bash
+flutter pub get
+flutter run
+```
+
+The API base URL lives in `lib/app/core/constants/api_constants.dart`.
+`lib/app/core/dev_flags.dart` holds development switches.
